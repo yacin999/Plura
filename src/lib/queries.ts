@@ -1,6 +1,6 @@
 "use server"
 
-import { currentUser } from "@clerk/nextjs"
+import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
 import { User } from "@prisma/client"
@@ -84,6 +84,45 @@ const saveActivityLogsNotifications = async ({
 
     if (response) foundAgencyId = response.agencyId
 
+    if (subAccountId) {
+        const notification = db.notification.create({
+            data : {
+                notification : `${userData.name} | ${description}`,
+                User : {
+                    connect : {
+                        id : userData.id
+                    }
+                },
+                Agency : {
+                    connect : {
+                        id : foundAgencyId
+                    }
+                },
+                SubAccount : {
+                    connect : {
+                        id : subAccountId
+                    }
+                }
+            },
+        })
+    }else {
+        const notification = db.notification.create({
+            data : {
+                notification : `${userData.name} | ${description}`,
+                User : {
+                    connect : {
+                        id : userData.id
+                    }
+                },
+                Agency : {
+                    connect : {
+                        id : foundAgencyId
+                    }
+                },
+            },
+        })
+    }
+
 }
 
 
@@ -116,6 +155,29 @@ export const verifyAndAcceptInvitation = async ()=>{
             createdAt : new Date(),
             updatedAt : new Date()
         })
+        await saveActivityLogsNotifications({
+            agencyId : invitationExists?.agencyId,
+            description : 'Joined',
+            subAccountId : undefined
+        })
+
+        if(userDetails) {
+            await clerkClient.users.updateUserMetadata(user.id, {
+                privateMetadata : {
+                    role : userDetails.role || 'SUBACCOUNT_USER'
+                }
+            })
+
+            await db.invitation.delete({where : {email : userDetails.email}})
+            return userDetails.agencyId
+        }else {
+            const agency = await db.user.findUnique({
+                where : {
+                    email : user.emailAddresses[0].emailAddress
+                }
+            })
+            return agency ? agency.agencyId : null
+        }
     }
 
 }
