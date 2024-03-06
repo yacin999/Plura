@@ -40,7 +40,7 @@ const Page = async({searchParams } : {
   return (
     <div className='flex justify-center items-center mt-4'>
       <div className='max-w-[850px] border-[1px] p-4 rounded-xl'>
-        <h1 className='text-4xl'>Create an Agency</h1>
+        <h1 className='text-4xl mb-4'>Create an Agency</h1>
         <AgencyDetails data={{companyEmail : authUser?.emailAddresses[0].emailAddress}}/>
       </div>
     </div>
