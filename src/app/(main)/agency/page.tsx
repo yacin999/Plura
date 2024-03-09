@@ -30,7 +30,7 @@ const Page = async({searchParams } : {
         return redirect(
           `/agency/${agencyId}/${statePath}?code=${searchParams.code}`
         )
-      }else redirect(`/agency/${agencyId}`)
+      }else return redirect(`/agency/${agencyId}`)
     }else {
       <div>Not Authorized</div>
     }
