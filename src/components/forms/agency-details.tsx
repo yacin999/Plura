@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { NumberInput } from '@tremor/react'
+import { v4 } from 'uuid'
 
 import { useToast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
@@ -15,7 +16,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import FileUpload from '../global/file-upload'
 import { Input } from '../ui/input'
 import { Switch } from '../ui/switch'
-import { deleteAgency, initUser, saveActivityLogsNotifications, updateAgencyDetails } from '@/lib/queries'
+import { deleteAgency, initUser, saveActivityLogsNotifications, updateAgencyDetails, upsertAgency } from '@/lib/queries'
 import { Button } from '../ui/button'
 import Loading from '../global/loading'
 
@@ -95,7 +96,26 @@ const AgencyDetails = ({data} : Props) => {
             }
             //WIP custId
             newUserData = await initUser({role : "AGENCY_OWNER"})
-            
+            if (!data?.id) {
+                const response = await upsertAgency({
+                    id: data?.id ? data.id : v4(),
+                    // customerId: data?.customerId ,
+                    address: values.address,
+                    agencyLogo: values.agencyLogo,
+                    city: values.city,
+                    companyPhone: values.companyPhone,
+                    country: values.country,
+                    name: values.name,
+                    state: values.state,
+                    whiteLabel: values.whiteLabel,
+                    zipCode: values.zipCode,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    companyEmail: values.companyEmail,
+                    connectAccountId: '',
+                    goal: 5,
+                })
+            }
         } catch (error) {
             
         }

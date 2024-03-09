@@ -227,7 +227,7 @@ export const initUser = async (newUser: Partial<User>) => {
     return userData
 }
 
-export const upsertAgency = async (agency : Agency, price : Plan)=>{
+export const upsertAgency = async (agency : Agency, price? : Plan)=>{
     if(!agency.companyEmail) return null
     try {
         const agencyDetails = await db.agency.upsert({
