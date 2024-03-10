@@ -11,7 +11,6 @@ const Page = async({searchParams } : {
 
   // verify and accept the received Invitation:
   const agencyId = await verifyAndAcceptInvitation()
-  console.log("agency id from agency page :", agencyId)
 
   //get users details
   const user = await getAuthUserDetails()

@@ -16,7 +16,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import FileUpload from '../global/file-upload'
 import { Input } from '../ui/input'
 import { Switch } from '../ui/switch'
-import { deleteAgency, initUser, saveActivityLogsNotifications, updateAgencyDetails, upsertAgency } from '@/lib/queries'
+import { deleteAgency, initUser, saveActivityLogsNotification, updateAgencyDetails, upsertAgency } from '@/lib/queries'
 import { Button } from '../ui/button'
 import Loading from '../global/loading'
 
@@ -99,7 +99,6 @@ const AgencyDetails = ({data} : Props) => {
             if (!data?.id) {
                 const response = await upsertAgency({
                     id: data?.id ? data.id : v4(),
-                    // customerId: data?.customerId ,
                     address: values.address,
                     agencyLogo: values.agencyLogo,
                     city: values.city,
@@ -115,9 +114,18 @@ const AgencyDetails = ({data} : Props) => {
                     connectAccountId: '',
                     goal: 5,
                 })
+                toast({
+                    title : 'Created Agency',
+                })
+                return router.refresh()
             }
         } catch (error) {
-            
+            console.log("error")
+            toast({
+                variant : 'destructive',
+                title : 'Oppse !',
+                description : 'could not create your agency'
+            })
         }
     }
 
@@ -227,27 +235,30 @@ const AgencyDetails = ({data} : Props) => {
                                 ))}
                             />
                             {/* whiteLabel field */}
-                            <FormField 
-                                disabled = {isLoading}
+                            <FormField
+                                disabled={isLoading}
                                 control={form.control}
                                 name="whiteLabel"
-                                render={(({field})=>(
-                                    <FormItem  className='flex flex-row items-center justify-between rounded-lg border gap-4 p-4 mb-3'>
-                                        <div>
-                                            <FormLabel>Whiteabel Agency</FormLabel>
-                                            <FormDescription>
-                                                Turning on whitelabel mode will show your agency logo to all subaccounts by default. You can overwrite this functionality through subaccount sutttings.
-                                            </FormDescription>
-                                        </div>
-                                        <FormControl>
-                                            <Switch
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border gap-4 p-4">
+                                            <div>
+                                                <FormLabel>Whitelabel Agency</FormLabel>
+                                                <FormDescription>
+                                                Turning on whilelabel mode will show your agency logo
+                                                to all sub accounts by default. You can overwrite this
+                                                functionality through sub account settings.
+                                                </FormDescription>
+                                            </div>
+                                            <FormControl>
+                                                <Switch
                                                 checked={field.value}
-                                                onChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <FormMessage/>
-                                    </FormItem>
-                                ))}
+                                                onCheckedChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )
+                                }}
                             />
 
                             {/* agency address */}
@@ -351,10 +362,10 @@ const AgencyDetails = ({data} : Props) => {
                                     onValueChange={async(val)=>{
                                         if (!data?.id)return 
                                         await updateAgencyDetails(data.id, {goal : val})
-                                        await saveActivityLogsNotifications({
+                                        await saveActivityLogsNotification({
                                             agencyId : data.id,
                                             description : `Updated the agency goal to | ${val} SubAccount`,
-                                            subAccountId : undefined
+                                            subaccountId: undefined,
                                         })
                                         router.refresh()
                                     }}
