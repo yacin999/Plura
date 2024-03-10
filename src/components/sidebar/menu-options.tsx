@@ -1,5 +1,8 @@
+'use client'
+
 import { AgencySidebarOption, SubAccount, SubAccountSidebarOption } from '@prisma/client'
-import React from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
+import { Sheet, SheetTrigger } from '../ui/sheet'
 
 type Props = {
     defaultOpen? : Boolean,
@@ -19,8 +22,24 @@ const MenuOptions = ({
     details, 
     user, 
     id}: Props) => {
+        const [isMounted, setIsMounted] = useState(false)
+        const openState = useMemo(()=> (defaultOpen ? {open : true} : {}), [defaultOpen])
+
+        useEffect(()=>{
+            setIsMounted(true)
+        }, [])
+
+        if (isMounted) return
+
   return (
-    <div>MenuOptions</div>
+    <Sheet 
+        modal={false}
+        {...openState}
+    >
+        <SheetTrigger>
+            
+        </SheetTrigger>
+    </Sheet>
   )
 }
 
