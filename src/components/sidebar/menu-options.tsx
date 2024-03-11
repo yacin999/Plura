@@ -2,7 +2,7 @@
 
 import { AgencySidebarOption, SubAccount, SubAccountSidebarOption } from '@prisma/client'
 import React, {useState, useEffect, useMemo} from 'react'
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from '../ui/sheet'
 import { ChevronsUpDown, Compass, Menu } from 'lucide-react'
 import { Button } from '../ui/button'
 import clsx from 'clsx'
@@ -37,6 +37,7 @@ const MenuOptions = ({
         )
 
         useEffect(() => {
+            console.log("test user ageny :", user?.agency)
             setIsMounted(true)
         }, [])
 
@@ -101,31 +102,54 @@ const MenuOptions = ({
                                 <CommandInput placeholder='Search Account...'/>
                                 <CommandList className='pb-16'>
                                     <CommandEmpty>No result found.</CommandEmpty>
-                                    {user?.role === "AGENCY_OWNER" || user?.role === "AGENCY_ADMIN" && user?.agency && (
+                                    {(user?.role === 'AGENCY_OWNER' || user?.role === 'AGENCY_ADMIN') && user?.Agency &&(
                                         <CommandGroup heading="Agency">
-                                            <CommandItem 
-                                                className='!bg-transparent my-2 text-primary border-[1px] border-border p-2 rounded-md hover:!bg-muted cursor-pointer transition-all'    
-                                            >{
-                                                defaultOpen ? (
-                                                    <Link href={`/agency/${user.agency.id}`}
-                                                    className='flex gap-4 w-full h-full'>
-                                                        <div className='relative w-16'>
-                                                            <Image 
-                                                                src={user?.agency?.agencyLogo}
-                                                                alt='Agency Logo'
-                                                                fill
-                                                                className='rounded-md object-contain'
-                                                            />
-
-                                                        </div>
-                                                        <div className='flex flex-col flex-1'>
-                                                            {user?.agency.name}
-                                                            <span className='text-muted-foreground'>{user?.agency.address}</span>
-                                                        </div>
-                                                    </Link>
-                                                ) : ""
-                                            }</CommandItem>
-                                        </CommandGroup>
+                                        <CommandItem className="!bg-transparent my-2 text-primary broder-[1px] border-border p-2 rounded-md hover:!bg-muted cursor-pointer transition-all">
+                                          {defaultOpen ? (
+                                            <Link
+                                              href={`/agency/${user?.Agency?.id}`}
+                                              className="flex gap-4 w-full h-full"
+                                            >
+                                              <div className="relative w-16">
+                                                <Image
+                                                  src={user?.Agency?.agencyLogo}
+                                                  alt="Agency Logo"
+                                                  fill
+                                                  className="rounded-md object-contain"
+                                                />
+                                              </div>
+                                              <div className="flex flex-col flex-1">
+                                                {user?.Agency?.name}
+                                                <span className="text-muted-foreground">
+                                                  {user?.Agency?.address}
+                                                </span>
+                                              </div>
+                                            </Link>
+                                          ) : (
+                                            <SheetClose asChild>
+                                              <Link
+                                                href={`/agency/${user?.Agency?.id}`}
+                                                className="flex gap-4 w-full h-full"
+                                              >
+                                                <div className="relative w-16">
+                                                  <Image
+                                                    src={user?.Agency?.agencyLogo}
+                                                    alt="Agency Logo"
+                                                    fill
+                                                    className="rounded-md object-contain"
+                                                  />
+                                                </div>
+                                                <div className="flex flex-col flex-1">
+                                                  {user?.Agency?.name}
+                                                  <span className="text-muted-foreground">
+                                                    {user?.Agency?.address}
+                                                  </span>
+                                                </div>
+                                              </Link>
+                                            </SheetClose>
+                                          )}
+                                        </CommandItem>
+                                      </CommandGroup>
                                     )}
                                 </CommandList>
                             </Command>
