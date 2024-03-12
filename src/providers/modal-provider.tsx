@@ -1,7 +1,7 @@
 'use client'
 
 import { Agency, User } from '@prisma/client'
-import React, {createContext} from 'react'
+import React, {useState, useEffect, createContext, useContext} from 'react'
 
 interface ModalProviderProps {
     children : React.ReactNode
@@ -19,7 +19,7 @@ type modalContextType = {
     setClose : ()=> void
 }
 
-export const modalContext = createContext<modalContextType>({
+export const ModalContext = createContext<modalContextType>({
     data : {},
     isOpen : false,
     setOpen : (modal : React.ReactNode, fetchData?: ()=>Promise<any>) => {},
@@ -27,9 +27,48 @@ export const modalContext = createContext<modalContextType>({
 })
 
 const ModalProvider: React.FC<ModalProviderProps> = ({children}) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const [data, setData] = useState<modalData>({})
+    const [showingModal, setshowingModal] = useState<React.ReactNode>(null)
+    const [isMounted, setIsMounted] = useState(false)
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+    
+    const setOpen = async (modal : React.ReactNode, fetchData?:()=>Promise<any>)=>{
+        if (modal){
+            if (fetchData){
+                setData({...data, ...(await fetchData())} || {})
+            }
+            setshowingModal(modal)
+            setIsOpen(true)
+        }
+    }
+
+    const setClose = () => {
+        setIsOpen(false)
+        setData({})
+    }
+
+    if (!isMounted) return null
   return (
-    <div>modal-provider</div>
+    <ModalContext.Provider value={{data, setOpen, setClose, isOpen}}>
+        {children}
+        {showingModal}
+    </ModalContext.Provider>
   )
 }
 
 export default ModalProvider
+
+
+export const useModal = () => {
+    const context = useContext(ModalContext)
+
+    if (!context) {
+        throw new Error("useModal must be used with the modalProvider")
+    }
+    
+    return context
+}
