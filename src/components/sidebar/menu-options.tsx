@@ -236,8 +236,9 @@ const MenuOptions = ({
                 <Separator className='mb-4'/>
                 <nav className='relative'>
                   <Command className='rounded-lg overflow-visible bg-transparent'>
-                    <CommandEmpty>No Results</CommandEmpty>
-                    <CommandList className='pb-16 overflow-visible'>
+                    <CommandInput placeholder='Search...'/>
+                    <CommandList className='py-6 overflow-visible'>
+                      <CommandEmpty>No Results</CommandEmpty>
                         <CommandGroup className='overflow-visible'>
                           {
                             sidebarOpt.map(sidebarOption=>{
@@ -251,7 +252,7 @@ const MenuOptions = ({
                               return (
                                 <CommandItem 
                                   key={sidebarOption.id}
-                                  className='md:w-[300px]'
+                                  className='md:max-w-[300px]'
                                 >
                                   <Link 
                                     href={sidebarOption.link}
@@ -275,3 +276,5 @@ const MenuOptions = ({
 }
 
 export default MenuOptions
+
+
