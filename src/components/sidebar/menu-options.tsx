@@ -1,6 +1,6 @@
 'use client'
 
-import { AgencySidebarOption, SubAccount, SubAccountSidebarOption } from '@prisma/client'
+import { Agency, AgencySidebarOption, SubAccount, SubAccountSidebarOption } from '@prisma/client'
 import React, {useState, useEffect, useMemo} from 'react'
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '../ui/sheet'
 import { ChevronsUpDown, Compass, Menu, PlusCircleIcon } from 'lucide-react'
@@ -13,9 +13,12 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import Link from 'next/link'
 import { useModal } from '@/providers/modal-provider'
 import CustomModal from '../global/custom-modal'
+import SubAccountDetails from '../forms/subaccount-details'
+import { Separator } from '../ui/separator'
+import { icons } from '@/lib/constants'
 
 type Props = {
-    defaultOpen? : Boolean,
+    defaultOpen?: Boolean,
     subaccounts : SubAccount[],
     sidebarOpt : AgencySidebarOption[] | SubAccountSidebarOption[],
     sidebarLogo : string,
@@ -207,7 +210,18 @@ const MenuOptions = ({
                                 </CommandList>
                                 {(user?.role === "AGENCY_OWNER" || user?.role ===  "AGENCY_ADMIN") && (
                                   <Button className='w-full flex gap-2'
-                                    onClick={()=>setOpen(<CustomModal title='' subheading='' defaultOpen children></CustomModal>)}
+                                    onClick={()=>setOpen(
+                                      <CustomModal 
+                                        title='Create a Subaccount' 
+                                        subheading='You can switch between your agency account and the subaccount form the sidebar'
+                                      >
+                                        <SubAccountDetails
+                                          agencyDetails={user?.Agency as Agency}
+                                          userId={user?.id as string}
+                                          userName={user?.name}
+                                        />
+                                      </CustomModal>
+                                    )}
                                   >
                                     <PlusCircleIcon size={15}/>
                                     Create Sub Account
@@ -217,6 +231,43 @@ const MenuOptions = ({
                         }
                     </PopoverContent>
                 </Popover>
+
+                <p className='text-muted-foreground text-xs mb-2'>MENU LINKS</p>
+                <Separator className='mb-4'/>
+                <nav className='relative'>
+                  <Command className='rounded-lg overflow-visible bg-transparent'>
+                    <CommandEmpty>No Results</CommandEmpty>
+                    <CommandList className='pb-16 overflow-visible'>
+                        <CommandGroup className='overflow-visible'>
+                          {
+                            sidebarOpt.map(sidebarOption=>{
+                              let val
+                              const result = icons.find(
+                                (icon) => icon.value === sidebarOption.icon
+                              )
+                              if (result) {
+                                val = <result.path />
+                              }
+                              return (
+                                <CommandItem 
+                                  key={sidebarOption.id}
+                                  className='md:w-[300px]'
+                                >
+                                  <Link 
+                                    href={sidebarOption.link}
+                                    className='flex items-center gap-2 hover:bg-transparent rounded-md transition-all md:w-full w-[320px]'
+                                    >
+                                      {val}
+                                      <span>{sidebarOption.name}</span>
+                                    </Link>
+                                </CommandItem>
+                              )
+                            })
+                          }
+                        </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </nav>
             </div>
         </SheetContent>
     </Sheet>
