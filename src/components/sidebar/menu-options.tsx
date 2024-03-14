@@ -252,7 +252,7 @@ const MenuOptions = ({
                               return (
                                 <CommandItem 
                                   key={sidebarOption.id}
-                                  className='md:max-w-[300px]'
+                                  className='md:w-[320px] w-full'
                                 >
                                   <Link 
                                     href={sidebarOption.link}
@@ -276,5 +276,3 @@ const MenuOptions = ({
 }
 
 export default MenuOptions
-
-
