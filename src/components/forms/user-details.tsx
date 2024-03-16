@@ -11,9 +11,13 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import FileUpload from '../global/file-upload'
 import { Input } from '../ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { Button } from '../ui/button'
+import Loading from '../global/loading'
+import { Separator } from '../ui/separator'
 
 type Props = {
     id : string | null,
@@ -193,7 +197,63 @@ const UserDetails = ({id, type, userData, subAccounts}: Props) => {
                         <FormMessage />
                         </FormItem>
                     )}
-                />   
+                />  
+                <FormField
+                    disabled={form.formState.isSubmitting}
+                    control={form.control}
+                    name='role'
+                    render={({field})=>(
+                        <FormItem className='flex-1'>
+                            <FormLabel>User Role</FormLabel>
+                            <Select 
+                                disabled={field.value === "AGENCY_OWNER"}
+                                onValueChange={value=>{
+                                    if(value=== "SUBACCOUNT_USER" || value === "SUBACCOUNT_GUEST") {
+                                        setRoleState("You need to have subaccounts to assign Subaccount access to team members")
+                                    }else {
+                                        setRoleState("")
+                                    }
+                                    field.onChange(value)
+                                }}
+                                defaultValue={field.value}
+                            >
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select user role..."/>
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value='AGENCY_ADMIN'>Agency Admin</SelectItem>
+                                    {
+                                        (data?.user?.role === "AGENCY_OWNER" || userData?.role === "AGENCY_OWNER") && (<SelectItem value='AGENCY_OWNER'>Agency Owner</SelectItem>)
+                                    }
+                                    <SelectItem value='SUBACCOUNT_USER'>Subaccount User</SelectItem>
+                                    <SelectItem value='SUBACCOUNT_GUEST'>Subaccount Guest</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <p className='text-muted-foregournd'>{roleState}</p>
+                        </FormItem>
+                    )} 
+                />
+
+                <Button
+                    disabled={form.formState.isSubmitting}
+                    type='submit'
+                >{form.formState.isSubmitting ? <Loading/> : "Save User Details"}
+                </Button>
+                
+                {authUserData?.role ===  "AGENCY_OWNER" && (
+                    <div>
+                        <Separator className='my-4'/>
+                        <FormLabel>User Permissions</FormLabel>
+                        <FormDescription className='mb-4'>You can give Sub Account access to team member by turning on access control for each subaccount. this is only visible to Agency Owner</FormDescription>
+                        <div className='flex flex-col gap-4'>
+                            {/* {subAccounts?.map(subAccount=>{
+                                const subAccountPermissionsDetails
+                            })} */}
+                        </div>
+                    </div>
+                )}
                 </form>
             </Form>
         </CardContent>
