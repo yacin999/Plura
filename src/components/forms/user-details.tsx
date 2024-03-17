@@ -1,4 +1,5 @@
-'use client'
+"use client"
+
 
 import { AuthUserWithAgencySigebarOptionsSubAccounts, UserWithPermissionsAndSubAccounts } from '@/lib/types'
 import { useModal } from '@/providers/modal-provider'
@@ -6,7 +7,7 @@ import { SubAccount, User } from '@prisma/client'
 import React, {useState, useEffect} from 'react'
 import { useToast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
-import { getAuthUserDetails, getUserPermissions, saveActivityLogsNotification, updateUser } from '@/lib/queries'
+import { changeUserPermissions, getAuthUserDetails, getUserPermissions, saveActivityLogsNotification, updateUser } from '@/lib/queries'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,6 +19,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../ui/button'
 import Loading from '../global/loading'
 import { Separator } from '../ui/separator'
+import { Switch } from '../ui/switch'
+import { v4 } from 'uuid'
 
 type Props = {
     id : string | null,
@@ -93,6 +96,54 @@ const UserDetails = ({id, type, userData, subAccounts}: Props) => {
         }
     }, [data, form])
 
+
+    // on Switch component changed handler:
+    const onchangePermissions = async(
+        subAccountId : string,
+        val : boolean,
+        permissionId : string | undefined
+    )=>{
+        if (!data.user?.email) return
+        setLoadingPermissions(true)
+        const response = await changeUserPermissions(
+            permissionId ? permissionId : v4(), 
+            data.user.email,
+            subAccountId,
+            val
+        )
+        if (type === "agency") {
+            await saveActivityLogsNotification({
+                agencyId : authUserData?.Agency?.id,
+                description : `Gave ${userData?.name} access to | ${subAccountPermissions?.Permissions.find(p=>{
+                    p.subAccountId === subAccountId
+                })?.SubAccount.name}`,
+                subaccountId : subAccountPermissions?.Permissions.find(p=>{
+                    p.subAccountId === subAccountId})?.SubAccount.id
+            })
+        }
+        if (response) {
+            toast({
+                title : 'Success',
+                description : 'The request was successful'
+            })
+            if(subAccountPermissions){
+                subAccountPermissions.Permissions.find(perm=>{
+                    if (perm.subAccountId === subAccountId) {
+                        return {...perm, access : !perm.access}
+                    }
+                    return perm
+                })
+            }
+        }else {
+            toast({
+                variant : 'destructive',
+                title : "Failed",
+                description : "Could not update permissions"
+            })
+            router.refresh()
+            setLoadingPermissions(false)
+        }
+    }
 
     const onSubmit = async (values: z.infer<typeof userDataSchema>) => {
         if (!id) return
@@ -248,9 +299,19 @@ const UserDetails = ({id, type, userData, subAccounts}: Props) => {
                         <FormLabel>User Permissions</FormLabel>
                         <FormDescription className='mb-4'>You can give Sub Account access to team member by turning on access control for each subaccount. this is only visible to Agency Owner</FormDescription>
                         <div className='flex flex-col gap-4'>
-                            {/* {subAccounts?.map(subAccount=>{
-                                const subAccountPermissionsDetails
-                            })} */}
+                            {subAccounts?.map(subAccount=>{
+                                const subAccountPermissionsDetails = subAccountPermissions?.Permissions.find(p=>{
+                                    p.subAccountId === subAccount.id
+                                })
+                                return <div key={subAccount.id} className='flex flex-col items-center justify-between rounded-lg border p-4'>
+                                    <div><p>{subAccount.name}</p></div>
+                                    <Switch 
+                                        disabled={loadingPermissions}
+                                        checked={subAccountPermissionsDetails?.access}
+                                        onCheckedChange={(permission)=> onchangePermissions(subAccount.id, permission, subAccountPermissionsDetails?.id)}
+                                    />
+                                </div>
+                            })}
                         </div>
                     </div>
                 )}
