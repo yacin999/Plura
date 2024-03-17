@@ -432,3 +432,22 @@ export const changeUserPermissions = async(
       console.log("could not change permission :", error)
     }
 }
+
+
+export const getSubaccountDetails = async(subaccountId : string)=>{
+  const response = db.subAccount.findUnique({
+    where : {
+      id : subaccountId
+    }
+  })
+
+  return response
+}
+
+export const deleteSubAccount = async (subaccountId : string) =>{
+  const response = db.subAccount.delete({
+    where : {
+      id : subaccountId
+    }
+  })
+}
