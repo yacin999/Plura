@@ -450,4 +450,6 @@ export const deleteSubAccount = async (subaccountId : string) =>{
       id : subaccountId
     }
   })
+
+  return response
 }
