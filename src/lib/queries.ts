@@ -3,7 +3,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role } from "@prisma/client"
 import { v4 } from "uuid"
 
 export const getAuthUserDetails = async ()=>{
@@ -467,9 +467,6 @@ export const deleteUser = async (userId: string) => {
 }
 
 
-
-
-
 // get a user by id
 export const getUser = async (id: string) => {
   const user = await db.user.findUnique({
@@ -479,4 +476,26 @@ export const getUser = async (id: string) => {
   })
 
   return user
+}
+
+// Send an Invitaion
+export const sendInvitation = async (role : Role, email : string, agencyId: string) => {
+  const response = await db.invitation.create({data : {role, email, agencyId}})
+
+  try {
+    // send an invitation to the new user in his email:
+    const invitation = await clerkClient.invitations.createInvitation({
+      emailAddress : email,
+      redirectUrl : process.env.NEXT_PUBLIC_URL,
+      publicMetadata : {
+        throughInvitation : true,
+        role
+      }
+    })
+  } catch (error) {
+    console.log('error from sendInvitation server action :', error)
+    throw error
+  }
+
+  return response
 }
