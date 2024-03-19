@@ -303,7 +303,7 @@ const UserDetails = ({id, type, userData, subAccounts}: Props) => {
                                 const subAccountPermissionsDetails = subAccountPermissions?.Permissions.find(p=>{
                                     p.subAccountId === subAccount.id
                                 })
-                                return <div key={subAccount.id} className='flex flex-col items-center justify-between rounded-lg border p-4'>
+                                return <div key={subAccount.id} className='flex items-center justify-between rounded-lg border p-4'>
                                     <div><p>{subAccount.name}</p></div>
                                     <Switch 
                                         disabled={loadingPermissions}
