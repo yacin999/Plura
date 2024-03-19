@@ -3,6 +3,7 @@ import React from 'react'
 import DataTable from './data-table'
 import { Columns, Plus } from 'lucide-react'
 import { currentUser } from '@clerk/nextjs'
+import { columns } from './columns'
 
 type Props = {
   params : {agencyId : string}
@@ -47,8 +48,9 @@ const TeamPage = async ({params}: Props) => {
       }
       modalChildren={<></>}
       filterValue='name'
-      columns={Columns}
+      columns={columns}
       data={TeamMembers}
+    />
   )
 }
 

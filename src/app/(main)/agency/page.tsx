@@ -14,6 +14,7 @@ const Page = async({searchParams } : {
 
   //get users details
   const user = await getAuthUserDetails()
+  console.log("test user role :", user?.role)
 
   if (agencyId) {
     if (user?.role === "SUBACCOUNT_GUEST" || user?.role === "SUBACCOUNT_USER") {
