@@ -4,12 +4,13 @@ import { useParams } from 'next/navigation'
 import React from 'react'
 
 
-type Props = {}
+type Props = {
+  params : {subaccountId : string}
+}
 
-const SubAccountDetails = ( props : Props) => {
-    const params = useParams()
+const SubAccountDetails = ( {params} : Props) => {
   return (
-    <div>subaccount id :{""}</div>
+    <div>subaccount id :{params.subaccountId}</div>
   )
 }
 
