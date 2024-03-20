@@ -377,7 +377,6 @@ export const upsertSubAccount = async (subAccount : SubAccount)=>{
       },
     },
   })
-
   return response
 }
 
@@ -479,23 +478,29 @@ export const getUser = async (id: string) => {
 }
 
 // Send an Invitaion
-export const sendInvitation = async (role : Role, email : string, agencyId: string) => {
-  const response = await db.invitation.create({data : {role, email, agencyId}})
+export const sendInvitation = async (
+  role: Role,
+  email: string,
+  agencyId: string
+) => {
+  const resposne = await db.invitation.create({
+    data: { email, agencyId, role },
+  })
 
   try {
-    // send an invitation to the new user in his email:
+    // send an invitaion to the user on his email account:
     const invitation = await clerkClient.invitations.createInvitation({
-      emailAddress : email,
-      redirectUrl : process.env.NEXT_PUBLIC_URL,
-      publicMetadata : {
-        throughInvitation : true,
-        role
-      }
+      emailAddress: email,
+      redirectUrl: process.env.NEXT_PUBLIC_URL,
+      publicMetadata: {
+        throughInvitation: true,
+        role,
+      },
     })
   } catch (error) {
-    console.log('error from sendInvitation server action :', error)
+    console.log(error)
     throw error
   }
 
-  return response
+  return resposne
 }
