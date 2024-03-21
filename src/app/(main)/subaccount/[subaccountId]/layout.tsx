@@ -1,4 +1,3 @@
-import BlurPage from '@/components/global/blur-page'
 import InfoBar from '@/components/global/infobar'
 import Sidebar from '@/components/sidebar'
 import Unauthorized from '@/components/unauthorized'
@@ -28,7 +27,6 @@ const SubaccountLayout = async({children, params}: Props) => {
     if (!user.privateMetadata.role) {
         return <Unauthorized/>
     }else {
-        console.log("test user role 22", user.privateMetadata.role)
         const allPermissions = await getAuthUserDetails()
         const hasPermission = allPermissions?.Permissions.find(permission=>
             permission.access && permission.subAccountId === params.subaccountId
@@ -58,7 +56,7 @@ const SubaccountLayout = async({children, params}: Props) => {
                     subAccountId={params.subaccountId as string}
                 />
                 <div className="relative">
-                  <BlurPage> {children}</BlurPage>
+                    {children}
                 </div>
             </div>
         </div>
