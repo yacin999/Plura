@@ -8,10 +8,10 @@ type Props = {
   params : {subaccountId : string}
 }
 
-const SubAccountDetails = ( {params} : Props) => {
+const SubaccountPageId = ( {params} : Props) => {
   return (
     <div>subaccount id :{params.subaccountId}</div>
   )
 }
 
-export default SubAccountDetails
+export default SubaccountPageId

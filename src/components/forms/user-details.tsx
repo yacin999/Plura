@@ -300,9 +300,8 @@ const UserDetails = ({id, type, userData, subAccounts}: Props) => {
                         <FormDescription className='mb-4'>You can give Sub Account access to team member by turning on access control for each subaccount. this is only visible to Agency Owner</FormDescription>
                         <div className='flex flex-col gap-4'>
                             {subAccounts?.map(subAccount=>{
-                                const subAccountPermissionsDetails = subAccountPermissions?.Permissions.find(p=>{
-                                    p.subAccountId === subAccount.id
-                                })
+                                const subAccountPermissionsDetails = subAccountPermissions?.Permissions.find(p=>
+                                    p.subAccountId === subAccount.id)
                                 return <div key={subAccount.id} className='flex items-center justify-between rounded-lg border p-4'>
                                     <div><p>{subAccount.name}</p></div>
                                     <Switch 
