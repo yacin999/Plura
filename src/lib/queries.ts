@@ -3,8 +3,9 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount, Role } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role, Media } from "@prisma/client"
 import { v4 } from "uuid"
+import { CreateMediaType } from "./types"
 
 export const getAuthUserDetails = async ()=>{
     const user = await currentUser()
@@ -517,4 +518,17 @@ export const getMedia = async (subaccountId : string) =>{
     }
   })
   return mediaFiles
+}
+
+// create media for subaccount:
+export const createMedia = async (subaccountId : string, mediaFile : CreateMediaType)=> {
+  const response = await db.media.create({
+    data : {
+      link : mediaFile.link,
+      name : mediaFile.name,
+      subAccountId : subaccountId
+    }
+  })
+
+  return response
 }
