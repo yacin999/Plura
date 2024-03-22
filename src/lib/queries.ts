@@ -532,3 +532,15 @@ export const createMedia = async (subaccountId : string, mediaFile : CreateMedia
 
   return response
 }
+
+
+// delete media file:
+export const deleteMedia = async (mediaId : string) =>{
+  const response = await db.media.delete({
+    where : {
+      id : mediaId
+    }
+  })
+
+  return response
+}

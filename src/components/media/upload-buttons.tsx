@@ -20,7 +20,9 @@ const MediaUploadButton = ({subaccountId}: Props) => {
         <UploadMediaForm
           subaccountId={subaccountId}
         />
-      </CustomModal>)}>Upload</Button>
+      </CustomModal>)}>
+        Upload
+    </Button>
   )
 }
 
