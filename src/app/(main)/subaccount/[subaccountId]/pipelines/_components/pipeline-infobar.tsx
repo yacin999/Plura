@@ -1,6 +1,6 @@
 'use client'
 
-import CreatePipelineForm from '@/components/forms/create-pipline-form'
+import CreatePipelineForm from '@/components/forms/create-pipeline-form'
 import CustomModal from '@/components/global/custom-modal'
 import { Button } from '@/components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command'

@@ -1,10 +1,11 @@
-import { Tabs, TabsList } from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { db } from '@/lib/db'
 import { getLanesWithTicketAndTags, getPipelineDetails } from '@/lib/queries'
 import { LaneDetail } from '@/lib/types'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import PipelineInfoBar from '../_components/pipeline-infobar'
+import PipelineSettings from '../_components/pipeline-settings'
 
 type Props = {
     params : {
@@ -20,7 +21,7 @@ const PipelinePage = async({params}: Props) => {
         return redirect(`subaccount/${params.subaccountId}/pipelines`)
     }
 
-    const pipelies = await db.pipeline.findMany({
+    const pipelines = await db.pipeline.findMany({
         where : {
             subAccountId : params.subaccountId
         }
@@ -36,9 +37,27 @@ const PipelinePage = async({params}: Props) => {
                 <PipelineInfoBar
                     pipelineId={params.pipelineId}
                     subAccountId={params.subaccountId}
-                    pipelines={pipelies}
+                    pipelines={pipelines}
                 />
+                <div>
+                    <TabsTrigger
+                        value='view' 
+                    >Pipeline View</TabsTrigger>
+                    <TabsTrigger
+                        value='settings' 
+                    >Settings</TabsTrigger>
+                </div>
             </TabsList>
+            <TabsContent value='view'>
+                Pipeline View
+            </TabsContent>
+            <TabsContent value='settings'>
+                <PipelineSettings 
+                    pipelineId={params.pipelineId}
+                    subaccountId={params.subaccountId}
+                    pipelines={pipelines}
+                />
+            </TabsContent>
         </Tabs>
     )
 }
