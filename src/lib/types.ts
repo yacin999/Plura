@@ -1,6 +1,7 @@
-import { Role, Notification, Prisma } from "@prisma/client"
+import { Role, Notification, Prisma, Lane, Ticket, Tag, User, Contact } from "@prisma/client"
 import { getAuthUserDetails, getMedia, getUserPermissions } from "./queries"
 import { db } from "./db"
+import { z } from "zod"
 
 
 
@@ -52,3 +53,26 @@ export type GetMediaFiles = Prisma.PromiseReturnType<typeof getMedia>
 
 export type CreateMediaType = Prisma.MediaCreateWithoutSubaccountInput
 
+
+export type TicketAndTags = Ticket & {
+  Tags: Tag[]
+  Assigned: User | null
+  Customer: Contact | null
+}
+
+export type LaneDetail = Lane & {
+  Tickets: TicketAndTags[]
+}
+
+
+export const CreatePipelineFormSchema = z.object({
+  name : z.string().min(1)
+})
+
+
+export const CreateFunnelFormSchema = z.object({
+  name : z.string().min(1),
+  description : z.string(),
+  subDomainName : z.string().optional(),
+  favicon : z.string().optional()
+})

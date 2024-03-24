@@ -3,9 +3,11 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount, Role, Media } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role, Media, Prisma } from "@prisma/client"
 import { v4 } from "uuid"
-import { CreateMediaType } from "./types"
+import { CreateFunnelFormSchema, CreateMediaType } from "./types"
+import { tr } from "date-fns/locale"
+import { z } from "zod"
 
 export const getAuthUserDetails = async ()=>{
     const user = await currentUser()
@@ -540,6 +542,77 @@ export const deleteMedia = async (mediaId : string) =>{
     where : {
       id : mediaId
     }
+  })
+
+  return response
+}
+
+
+// get pipeline details :
+export const getPipelineDetails = async (pipelineId : string) =>{
+  const response = await db.pipeline.findUnique({
+    where : {
+      id : pipelineId
+    }
+  })
+
+  return response
+}
+
+// get lanes with ticket and tags :
+export const getLanesWithTicketAndTags = async (pipelineId : string) => {
+  const response = await db.lane.findMany({
+    where : {
+      pipelineId
+    },
+    orderBy : {
+      order : "asc"
+    },
+    include : {
+      Tickets : {
+        orderBy : {order : "asc"},
+        include : {
+          Tags : true,
+          Assigned : true,
+          Customer : true
+        }
+      }
+    }
+  })
+
+  return response
+}
+
+// create or update a funnel:
+export const upsertFunnel = async (
+  subaccountId : string,
+  funnel : z.infer<typeof CreateFunnelFormSchema> & {liveProducts : string},
+  funnelId : string
+)=>{
+  const response = await db.funnel.upsert({
+    where : {
+      id : funnelId
+    },
+    update : funnel,
+    create : {
+      ...funnel,
+      id : funnelId || v4(),
+      subAccountId : subaccountId
+    }
+
+  })
+
+  return response
+}
+
+// create or update a pipline:
+export const upsertPipeline = async (pipeline : Prisma.PipelineUncheckedCreateWithoutLaneInput)=>{
+  const response = await db.pipeline.upsert({
+    where : {
+      id : pipeline.id || v4()
+    },
+    update : pipeline,
+    create : pipeline
   })
 
   return response
