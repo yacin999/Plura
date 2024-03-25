@@ -27,6 +27,13 @@ const PipelinePage = async({params}: Props) => {
         }
     })
 
+    const subaccountDetails = await db.subAccount.findUnique({
+        where : {
+            id : params.subaccountId
+        }
+    })
+
+    if (!subaccountDetails) return
     const lanes = (await getLanesWithTicketAndTags(params.pipelineId)) as LaneDetail[]
     return (
         <Tabs
@@ -54,7 +61,8 @@ const PipelinePage = async({params}: Props) => {
             <TabsContent value='settings'>
                 <PipelineSettings 
                     pipelineId={params.pipelineId}
-                    subaccountId={params.subaccountId}
+                    subaccountId={subaccountDetails?.id}
+                    subaccountName= {subaccountDetails?.name}
                     pipelines={pipelines}
                 />
             </TabsContent>

@@ -22,13 +22,17 @@ import { useRouter } from 'next/navigation'
 const PipelineSettings = ({
   pipelineId,
   subaccountId,
+  subaccountName,
   pipelines,
 }: {
   pipelineId: string
   subaccountId: string
+  subaccountName : string
   pipelines: Pipeline[]
 }) => {
-  const router = useRouter()
+    const pipelineDetails = pipelines.find((p) => p.id === pipelineId)
+    const router = useRouter()
+    
   return (
     <AlertDialog>
       <div>
@@ -52,7 +56,7 @@ const PipelineSettings = ({
                     await deletePipeline(pipelineId)
                     await saveActivityLogsNotification({
                         agencyId : undefined,
-                        description : "pipeline was updated successfuly",
+                        description : `${subaccountName} updated a pipeline ${pipelineDetails?.name}`,
                         subaccountId : subaccountId
                     })
                     toast({
@@ -77,7 +81,7 @@ const PipelineSettings = ({
 
         <CreatePipelineForm
           subAccountId={subaccountId}
-          defaultData={pipelines.find((p) => p.id === pipelineId)}
+          defaultData={pipelineDetails}
         />
       </div>
     </AlertDialog>
