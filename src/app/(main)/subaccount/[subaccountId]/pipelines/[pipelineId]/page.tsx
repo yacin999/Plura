@@ -1,11 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { db } from '@/lib/db'
-import { getLanesWithTicketAndTags, getPipelineDetails } from '@/lib/queries'
+import { getLanesWithTicketAndTags, getPipelineDetails, updateLanesOrder, updateTicketsOrder } from '@/lib/queries'
 import { LaneDetail } from '@/lib/types'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import PipelineInfoBar from '../_components/pipeline-infobar'
 import PipelineSettings from '../_components/pipeline-settings'
+import PipelineView from '../_components/pipeline-view'
 
 type Props = {
     params : {
@@ -35,6 +36,7 @@ const PipelinePage = async({params}: Props) => {
 
     if (!subaccountDetails) return
     const lanes = (await getLanesWithTicketAndTags(params.pipelineId)) as LaneDetail[]
+
     return (
         <Tabs
             defaultValue='view'
@@ -56,7 +58,14 @@ const PipelinePage = async({params}: Props) => {
                 </div>
             </TabsList>
             <TabsContent value='view'>
-                Pipeline View
+                <PipelineView
+                    lanes={lanes}
+                    pipelineId={params.pipelineId}
+                    subaccountId={params.subaccountId}
+                    pipelineDetails={pipelineDetails}
+                    updateLanesOrder={updateLanesOrder}
+                    updateTicketsOrder={updateTicketsOrder}
+                />
             </TabsContent>
             <TabsContent value='settings'>
                 <PipelineSettings 

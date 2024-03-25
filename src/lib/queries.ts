@@ -3,7 +3,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount, Role, Media, Prisma } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket } from "@prisma/client"
 import { v4 } from "uuid"
 import { CreateFunnelFormSchema, CreateMediaType } from "./types"
 import { tr } from "date-fns/locale"
@@ -627,4 +627,72 @@ export const deletePipeline = async (pipelineId : string ) =>{
   })
 
   return response
+}
+
+// update Lanes Order : 
+export const updateLanesOrder = async (lanes:Lane[]) =>{
+  try {
+    const updateTrans = lanes.map(lane=>
+      db.lane.update({
+        where : {
+          id : lane.id
+        },
+        data : {
+          order : lane.order
+        }
+      })
+    )
+    
+    await db.$transaction(updateTrans)
+  } catch (error) {
+    console.log("error from updating lanes order :", error)
+  }
+}
+
+// update Tickets Order : 
+export const updateTicketsOrder = async (tickets:Ticket[]) =>{
+  try {
+    const updateTrans = tickets.map(ticket=>
+      db.ticket.update({
+        where : {
+          id : ticket.id
+        },
+        data : {
+          order : ticket.order
+        }
+      })
+    )
+    
+    await db.$transaction(updateTrans)
+  } catch (error) {
+    console.log("error from updating tickets order :", error)
+  }
+}
+
+// update or create a lane : 
+export const upsertLane = async (lane : Prisma.LaneUncheckedCreateInput) => {
+  let order : number
+
+  if (!lane.order) {
+    const lanes = await db.lane.findMany({
+      where : {
+        pipelineId : lane.pipelineId
+      }
+    })
+
+    order = lanes.length
+  }else {
+    order = lane.order
+  }
+
+
+    const response = await db.lane.upsert({
+      where : {
+        id : lane.id || v4()
+      },
+      update : lane,
+      create : {...lane, order}
+    })
+
+    return response
 }
