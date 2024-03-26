@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
+import PipelineLane from './pipeline-lane'
 
 
 type Props = {
@@ -56,9 +57,31 @@ const PipelineView = ({
                     className='flex items-center gap-4'
                     onClick={handleAddLane}
                 >
-                    <Plus size={15}>Create Lane</Plus>
+                    <Plus size={15}/>
+                    Create Lane
                 </Button>
             </div>
+            <Droppable
+                droppableId='lane'
+                type='lane'
+                direction='horizontal'
+                key={"lanes"}
+            >
+                {provided=>(
+                    <div 
+                        className='flex items-center gap-x-2 overlow-scroll' 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                    >
+                        <div className='flex mt-4'>
+                            {allLanes.map((lane, index)=>(
+                                <PipelineLane/>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    </div>
+                )}
+            </Droppable>
         </div>
     </DragDropContext>
   )
