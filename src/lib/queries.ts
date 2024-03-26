@@ -3,7 +3,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket, Tag } from "@prisma/client"
 import { v4 } from "uuid"
 import { CreateFunnelFormSchema, CreateMediaType } from "./types"
 import { tr } from "date-fns/locale"
@@ -736,6 +736,73 @@ export const _getTicketsWithAllRelations = async(laneId : string) => {
       Assigned : true,
       Customer : true,
       Lane : true,
+      Tags : true
+    }
+  })
+
+  return response
+}
+
+// get all subaccount team members:
+export const getSubaccountTeamMembers = async (subaccountId : string) => {
+  const subaccountUsersWithAccess = await db.user.findMany({
+    where : {
+      Agency : {
+        SubAccount : {
+          some : {
+            id : subaccountId,
+          }
+        },
+      },
+      role : "SUBACCOUNT_USER",
+      Permissions : {
+        some : {
+          subAccountId : subaccountId,
+          access : true
+        }
+      }
+    }
+  })
+
+  return subaccountUsersWithAccess
+}
+
+// serach contact :
+export const searchContacts = async (searchTeams : string) => {
+  const response = await db.contact.findMany({
+    where : {
+      name : {
+        contains : searchTeams
+      }
+    }
+  })
+
+  return response
+}
+
+// create or update ticket : 
+export const upsetTicket = async (ticket : Prisma.TicketUncheckedCreateInput, tags : Tag[]) => {
+  let order : number
+  if (!ticket.order){
+    const tickets = await db.ticket.findMany({
+      where : {
+        laneId : ticket.laneId
+      }
+    })
+    order = tickets.length
+  }else {
+    order = ticket.order
+  }
+
+  const response = await db.ticket.upsert({
+    where : {
+      id : ticket.id || v4()
+    },
+    update : {...ticket, Tags : {set : tags}},
+    create : {...ticket, Tags : {connect : tags}, order},
+    include : {
+      Assigned : true,
+      Customer : true,
       Tags : true
     }
   })
