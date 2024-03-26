@@ -19,6 +19,7 @@ const MediaUploadButton = ({subaccountId}: Props) => {
       >
         <UploadMediaForm
           subaccountId={subaccountId}
+          closeModal={setClose}
         />
       </CustomModal>)}>
         Upload

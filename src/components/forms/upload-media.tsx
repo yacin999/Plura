@@ -27,6 +27,7 @@ import { Button } from '../ui/button'
 
 type Props = {
   subaccountId: string
+  closeModal : () => void
 }
 
 const formSchema = z.object({
@@ -34,7 +35,7 @@ const formSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
 })
 
-const UploadMediaForm = ({ subaccountId }: Props) => {
+const UploadMediaForm = ({ subaccountId,  closeModal}: Props) => {
   const { toast } = useToast()
   const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
@@ -115,6 +116,7 @@ const UploadMediaForm = ({ subaccountId }: Props) => {
             <Button
               type="submit"
               className="mt-4"
+              onClick={()=> closeModal()}
             >
               Upload Media
             </Button>
