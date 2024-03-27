@@ -809,3 +809,10 @@ export const upsetTicket = async (ticket : Prisma.TicketUncheckedCreateInput, ta
 
   return response
 }
+
+
+// delete ticket : 
+export const deleteTicket = async (ticketId : string) => {
+  const response = await db.ticket.delete({where : {id : ticketId}})
+  return response
+}
