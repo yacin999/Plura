@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Card, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Form } from '../ui/form'
 
 type Props = {
     laneId : string,
@@ -97,6 +98,14 @@ const TicketForm = ({laneId, subaccountId, getNewTicket}: Props) => {
         <CardHeader>
             <CardTitle>Ticket Details</CardTitle>
         </CardHeader>
+        <CardContent>
+            <Form {...form}>
+                <form 
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className='flex flex-col gap-4'
+                ></form>
+            </Form>
+        </CardContent>
     </Card>
 )
 }
