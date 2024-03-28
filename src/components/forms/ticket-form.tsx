@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { Card, CardHeader, CardTitle } from '../ui/card'
 
 type Props = {
     laneId : string,
@@ -92,7 +93,11 @@ const TicketForm = ({laneId, subaccountId, getNewTicket}: Props) => {
         }
     }
     return (
-    <div>TicketForm</div>
+    <Card className='w-full'>
+        <CardHeader>
+            <CardTitle>Ticket Details</CardTitle>
+        </CardHeader>
+    </Card>
 )
 }
 
