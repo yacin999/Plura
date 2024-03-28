@@ -10,7 +10,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { Form } from '../ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
 
 type Props = {
     laneId : string,
@@ -103,7 +104,25 @@ const TicketForm = ({laneId, subaccountId, getNewTicket}: Props) => {
                 <form 
                     onSubmit={form.handleSubmit(onSubmit)}
                     className='flex flex-col gap-4'
-                ></form>
+                >
+                    <FormField
+                        disabled={isLoading}
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Ticket Name</FormLabel>
+                            <FormControl>
+                                <Input
+                                placeholder="Name"
+                                {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </form>
             </Form>
         </CardContent>
     </Card>
