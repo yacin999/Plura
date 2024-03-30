@@ -23,6 +23,7 @@ import { Command, CommandGroup, CommandInput, CommandItem } from '../ui/command'
 import { CommandEmpty } from 'cmdk'
 import { cn } from '@/lib/utils'
 import Loading from '../global/loading'
+import TagCreator from '../global/tag-creator'
 
 type Props = {
     laneId : string,
@@ -168,11 +169,11 @@ const TicketForm = ({laneId, subaccountId, getNewTicket}: Props) => {
                         )}
                     />
                     <h3>Add tags</h3>
-                    {/* <TagCreator
+                    <TagCreator
                         subAccountId={subaccountId}
                         getSelectedTags={setTags}
                         defaultTags={defaultData.ticket?.Tags || []}
-                    />   */}
+                    />  
                     <FormLabel>Assigned to Team Member</FormLabel>
                     <Select
                         onValueChange={setAssignedTo}
