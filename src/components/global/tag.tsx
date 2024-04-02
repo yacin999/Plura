@@ -27,6 +27,7 @@ const TagComponent: React.FC<TagComponentProps> = ({
         'border-[1px] border-purple-400': colorName === 'PURPLE' && !title,
       })}
       key={colorName}
+      // select color when clicked
       onClick={() => {
         if (selectedColor) selectedColor(colorName)
       }}
