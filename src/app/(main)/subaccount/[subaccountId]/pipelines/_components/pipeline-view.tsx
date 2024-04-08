@@ -61,7 +61,32 @@ const PipelineView = ({
     const onDragEnd = (dropResult : DropResult) => {
         console.log(dropResult)
         const {destination, source, type} = dropResult
-        if (!destination){}
+        if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)){
+            return
+        }
+
+        switch (type) {
+            case "lane":{ 
+                const newLanes = [...allLanes].toSpliced(source.index, 1).toSpliced(destination.index, 0, allLanes[source.index]).map((lane, idx)=>{
+                    return {...lane, order : idx}
+                })
+                setAllLanes(newLanes)
+                updateLanesOrder(newLanes)  
+            }      
+            case "ticket" : {
+                let newLanes = [...allLanes]
+                const originLane = newLanes.find(lane=> lane.id === source.droppableId)
+                const destinationLane = newLanes.find(lane=> lane.id === destination.droppableId)
+                if (!originLane || destinationLane) {
+                    return
+                }
+
+                if (source.droppableId === destination.droppableId ) {
+                    //
+                }
+            }
+
+        }
     }
   return (
     <DragDropContext onDragEnd={()=>{}}>
