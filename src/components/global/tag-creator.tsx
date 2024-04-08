@@ -162,7 +162,7 @@ const TagCreator = ({subAccountId, getSelectedTags, defaultTags}: Props) => {
                 <PlusCircleIcon
                 onClick={handleAddTag}
                 size={20}
-                className='absolute top-1/2 transform translate-y-1/2 right-2 hover:text-primary transition-all cursor-pointer text-muted-foreground'
+                className='absolute top-1/2 transform -translate-y-1/2 right-2 hover:text-primary transition-all cursor-pointer text-muted-foreground'
                 />
             </div>
             <CommandList>

@@ -24,6 +24,7 @@ import { CommandEmpty } from 'cmdk'
 import { cn } from '@/lib/utils'
 import Loading from '../global/loading'
 import TagCreator from '../global/tag-creator'
+import { toast } from '../ui/use-toast'
 
 type Props = {
     laneId : string,
@@ -102,9 +103,16 @@ const TicketForm = ({laneId, subaccountId, getNewTicket}: Props) => {
                 description : `updated a ticket | ${response.name}`,
                 subaccountId : subaccountId
             })
+            if (response) getNewTicket(response)
+            router.refresh()
         } catch (error) {
-            
+            toast({
+                variant: 'destructive',
+                title: 'Oppse!',
+                description: 'Could not save pipeline details',
+            })
         }
+        setClose()
     }
     return (
     <Card className='w-full'>

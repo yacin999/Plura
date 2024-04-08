@@ -57,6 +57,12 @@ const PipelineView = ({
             </CustomModal>
         )
     }
+
+    const onDragEnd = (dropResult : DropResult) => {
+        console.log(dropResult)
+        const {destination, source, type} = dropResult
+        if (!destination){}
+    }
   return (
     <DragDropContext onDragEnd={()=>{}}>
         <div className='bg-white/60 dark:bg-background/60 rounded-xl p-4 use-automation-zoom-in'>
