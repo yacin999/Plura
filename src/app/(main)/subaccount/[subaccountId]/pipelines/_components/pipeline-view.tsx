@@ -77,19 +77,44 @@ const PipelineView = ({
                 let newLanes = [...allLanes]
                 const originLane = newLanes.find(lane=> lane.id === source.droppableId)
                 const destinationLane = newLanes.find(lane=> lane.id === destination.droppableId)
-                if (!originLane || destinationLane) {
+                if (!originLane || !destinationLane) {
                     return
                 }
 
                 if (source.droppableId === destination.droppableId ) {
-                    //
+                    const newOrderedTicket = [...originLane.Tickets].toSpliced(source.index, 1).toSpliced(destination.index, 0, originLane.Tickets[source.index]).map((item, idx)=>{
+                        return {...item, order : idx}
+                    })
+                    originLane.Tickets = newOrderedTicket
+                    setAllLanes(newLanes)
+                    updateTicketsOrder(newOrderedTicket)
+                    router.refresh()
+                }else {
+                    const [currentTicket] = originLane.Tickets.splice(source.index, 1)
+                    originLane.Tickets.forEach((ticket, idx)=> {
+                        ticket.order = idx
+                    })
+
+                    destinationLane.Tickets.splice(destination.index, 0, {
+                        ...currentTicket, 
+                        laneId : destination.droppableId
+                    })
+                    destinationLane.Tickets.forEach((ticket, idx)=> {
+                        ticket.order = idx
+                    })
+                    setAllLanes(newLanes)
+                    updateTicketsOrder([
+                        ...destinationLane.Tickets,
+                        ...originLane.Tickets
+                    ])
+                    router.refresh()
                 }
             }
 
         }
     }
   return (
-    <DragDropContext onDragEnd={()=>{}}>
+    <DragDropContext onDragEnd={onDragEnd}>
         <div className='bg-white/60 dark:bg-background/60 rounded-xl p-4 use-automation-zoom-in'>
             <div className='flex items-center justify-between'>
                 <h1 className='text-2xl'>{pipelineDetails?.name}</h1>
@@ -109,7 +134,7 @@ const PipelineView = ({
             >
                 {provided=>(
                     <div 
-                        className='flex items-center gap-x-2 overlow-scroll' 
+                        className='flex items-center gap-x-2' 
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
