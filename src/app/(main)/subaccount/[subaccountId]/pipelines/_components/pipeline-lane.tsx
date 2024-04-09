@@ -180,7 +180,7 @@ const PipelineLane: React.FC<PipelaneLaneProps> = ({
                     type="ticket"
                   >
                     {(provided) => (
-                      <div className=" max-h-[700px] pt-12 ">
+                      <div className=" max-h-[700px] overflow-scroll pt-12 ">
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
