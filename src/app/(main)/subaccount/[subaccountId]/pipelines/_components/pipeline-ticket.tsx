@@ -77,12 +77,12 @@ const PipelineTicket = ({
       <CustomModal
         title="Update Ticket Details"
         subheading=""
-      ><></>
-        {/* <TicketForm
+      >
+        <TicketForm
           getNewTicket={editNewTicket}
           laneId={ticket.laneId}
           subaccountId={subaccountId}
-        /> */}
+        />
       </CustomModal>,
       async () => {
         return { ticket: ticket }
