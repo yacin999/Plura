@@ -43,7 +43,6 @@ const MenuOptions = ({
         )
 
         useEffect(() => {
-            console.log("test user ageny :", user?.agency)
             setIsMounted(true)
         }, [])
 

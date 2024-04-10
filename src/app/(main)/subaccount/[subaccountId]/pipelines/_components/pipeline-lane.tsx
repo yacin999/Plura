@@ -1,3 +1,4 @@
+
 'use client'
 import CreateLaneForm from '@/components/forms/lane-form'
 
@@ -62,7 +63,6 @@ const PipelineLane: React.FC<PipelaneLaneProps> = ({
   })
 
   const laneAmt = useMemo(() => {
-    console.log(tickets)
     return tickets.reduce(
       (sum, ticket) => sum + (Number(ticket?.value) || 0),
       0
@@ -147,7 +147,7 @@ const PipelineLane: React.FC<PipelaneLaneProps> = ({
           >
             <AlertDialog>
               <DropdownMenu>
-                <div className="bg-slate-200/30 dark:bg-background/20  h-[700px] w-[300px] px-4 relative rounded-lg overflow-visible flex-shrink-0 ">
+                <div className="bg-slate-200/30 dark:bg-background/20  h-[700px] w-[300px] px-4 relative rounded-lg flex-shrink-0 ">
                   <div
                     {...provided.dragHandleProps}
                     className=" h-14 backdrop-blur-lg dark:bg-background/40 bg-slate-200/60  absolute top-0 left-0 right-0 z-10 "
@@ -180,7 +180,7 @@ const PipelineLane: React.FC<PipelaneLaneProps> = ({
                     type="ticket"
                   >
                     {(provided) => (
-                      <div className=" max-h-[700px] overflow-scroll pt-12 ">
+                      <div className=" max-h-[700px] pt-12 ">
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}

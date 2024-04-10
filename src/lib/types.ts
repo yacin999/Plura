@@ -90,7 +90,7 @@ export const LaneFormSchema = z.object({
 export type TicketWithTags = Prisma.PromiseReturnType<typeof getTicketsWithTags>
 
 const currencyNumberRegex = /^\d+(\.\d{1,2})?$/
-export const TicketFormScheme = z.object({
+export const TicketFormSchema = z.object({
   name : z.string().min(1),
   description : z.string().optional(),
   value : z.string().refine((value)=> currencyNumberRegex.test(value), {

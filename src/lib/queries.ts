@@ -744,7 +744,7 @@ export const _getTicketsWithAllRelations = async(laneId : string) => {
 }
 
 // get all subaccount team members:
-export const getSubaccountTeamMembers = async (subaccountId : string) => {
+export const getSubAccountTeamMembers = async (subaccountId : string) => {
   const subaccountUsersWithAccess = await db.user.findMany({
     where : {
       Agency : {
@@ -781,7 +781,7 @@ export const searchContacts = async (searchTeams : string) => {
 }
 
 // create or update ticket : 
-export const upsetTicket = async (ticket : Prisma.TicketUncheckedCreateInput, tags : Tag[]) => {
+export const upsertTicket = async (ticket : Prisma.TicketUncheckedCreateInput, tags : Tag[]) => {
   let order : number
   if (!ticket.order){
     const tickets = await db.ticket.findMany({
