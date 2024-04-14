@@ -3,7 +3,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket, Tag } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket, Tag, Contact } from "@prisma/client"
 import { v4 } from "uuid"
 import { CreateFunnelFormSchema, CreateMediaType } from "./types"
 import { tr } from "date-fns/locale"
@@ -849,6 +849,19 @@ export const getTagsForSubaccount = async (subaccountId : string) => {
   const response = db.subAccount.findUnique({
     where : {id: subaccountId},
     select : { Tags : true}
+  })
+
+  return response
+}
+
+// create or update contact :
+export const upsertContact = async (contact : Prisma.ContactUncheckedCreateInput) => {
+  const response = await db.contact.upsert({
+    where : {
+      id : contact.id || v4(),
+    },
+    update : contact,
+    create : contact
   })
 
   return response
