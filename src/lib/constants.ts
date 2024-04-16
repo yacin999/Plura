@@ -57,8 +57,9 @@ export const pricingCards = [
   },
 ]
 
+// change priority support
 export const addOnProducts = [
-  { title: 'Priority Support', id: 'prod_PNjJAE2EpP16pn' },
+  { title: 'Priority Support', id: 'prod_Pw2qE6k1YZ1lXF' },
 ]
 
 // export const icons = [
