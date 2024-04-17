@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PricesList } from '@/lib/types'
 import { useModal } from '@/providers/modal-provider'
 import { useSearchParams } from 'next/navigation'
@@ -43,9 +43,23 @@ const PricingCard = ({
             <CardHeader className='flex flex-col md:flex-row justify-between'>
                 <div>
                     <CardTitle>{title}</CardTitle>
-                    <CardDescription></CardDescription>
+                    <CardDescription>{description}</CardDescription>
                 </div>
+                <p className='text-6xl font-bold'>
+                    {amt}
+                    <small className='text-xs font-light text-muted-foreground'>{duration}</small>
+                </p>
             </CardHeader>
+            <CardContent>
+                <ul>
+                    {features.map(feature=> (
+                        <li 
+                            key={feature}
+                            className='list-disc ml-4 text-muted-foreground'
+                        >{feature}</li>
+                    ))}
+                </ul>
+            </CardContent>
         </div>
     </Card>
   )
