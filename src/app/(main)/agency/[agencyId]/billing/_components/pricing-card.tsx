@@ -1,6 +1,8 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import CustomModal from '@/components/global/custom-modal'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { PricesList } from '@/lib/types'
 import { useModal } from '@/providers/modal-provider'
 import { useSearchParams } from 'next/navigation'
@@ -37,6 +39,20 @@ const PricingCard = ({
     const searchParams = useSearchParams()
     const plan = searchParams.get("plan")
     
+    const handleManagePlan = ()=> {
+            setOpen(
+                <CustomModal
+                    title='Manage your Plan'
+                    subheading='you can change your plan at any time from the billing settings'
+                >
+                    <SubscriptionFormWrapper
+                        customerId={customerId}
+                        planExists={planExists}
+                    />
+                </CustomModal>
+            )
+    }
+
     return (
     <Card className='flex flex-col justify-between lg:w-1/2'>
         <div>
@@ -61,6 +77,20 @@ const PricingCard = ({
                 </ul>
             </CardContent>
         </div>
+        <CardFooter>
+            <Card className='w-full'>
+                <div className='flex flex-col md:!flex-row items-center justify-between rounded-lg border gap-4 p-4'>
+                    <div>
+                        <p>{highlightTitle}</p>
+                        <p className='text-sm text-muted-foreground'>{highlightDescription}</p>
+                    </div>
+                    <Button
+                        className='md:w-fit w-full'
+                        onClick={handleManagePlan}
+                    >{buttonCta}</Button>
+                </div>
+            </Card>
+        </CardFooter>
     </Card>
   )
 }

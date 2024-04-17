@@ -74,7 +74,7 @@ const page = async ({params}: Props) => {
           }
           duration='/ month'
           features={
-            agencySubscription?.Subscription?.active === true ? currentPlanDetails?.features || [] : []
+            agencySubscription?.Subscription?.active === true ? currentPlanDetails?.features || [] : currentPlanDetails?.features || pricingCards.find(pricing=> pricing.title === "Starter")?.features || []
           }
           title={
             agencySubscription?.Subscription?.active === true ? currentPlanDetails?.title || 'Started' : 'Started'
