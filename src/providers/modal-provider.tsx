@@ -13,7 +13,7 @@ export type modalData = {
     agency?:Agency,
     ticket?:TicketDetails[0],
     contact? : Contact,
-    plan? : {
+    plans? : {
         defaultPriceId : Plan,
         plans : PricesList['data']
     }
