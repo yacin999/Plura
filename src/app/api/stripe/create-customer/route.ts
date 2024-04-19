@@ -18,6 +18,7 @@ export async function POST(req:Request) {
             address,
             shipping
         })
+        console.log("test stripe create customer :", customer)
         return Response.json({customerId : customer.id})
     } catch (error) {
         console.log("Error :", error)
