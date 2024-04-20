@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   const body = await req.text()
   const sig = headers().get('Stripe-Signature')
   const webhookSecret =
-    process.env.STRIPE_WEBHOOK_SECRET_LIVE ?? process.env.STRIPE_WEBHOOK_SECRET
+  process.env.STRIPE_WEBHOOK_SECRET_LIVE ?? process.env.STRIPE_WEBHOOK_SECRET
   try {
     if (!sig || !webhookSecret) {
       console.log(
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       return
     }
     stripeEvent = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+    console.log("test STRIPE EVENT :")
   } catch (error: any) {
     console.log(`🔴 Error ${error.message}`)
     return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 })
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
             } else {
               console.log(
                 'SKIPPED AT CREATED FROM WEBHOOK 💳 because subscription status is not active',
-                subscription
+                "subscription"
               )
               break
             }

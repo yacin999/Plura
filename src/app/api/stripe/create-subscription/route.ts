@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
+  console.log("test create subscription endpoint !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   const { customerId, priceId } = await req.json()
   if (!customerId || !priceId)
     return new NextResponse('Customer Id or price id is missing', {
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
         expand: ['latest_invoice.payment_intent'],
       })
 
-    //   console.log("test subscription stripe creation : ", subscription)
+      console.log("test subscription stripe creation : ", subscription.status)
       return NextResponse.json({
         subscriptionId: subscription.id,
         //@ts-ignore
