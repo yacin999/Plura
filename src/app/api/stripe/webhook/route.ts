@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
       return
     }
     stripeEvent = stripe.webhooks.constructEvent(body, sig, webhookSecret)
-    console.log("test STRIPE EVENT :")
   } catch (error: any) {
     console.log(`🔴 Error ${error.message}`)
     return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 })
@@ -51,11 +50,11 @@ export async function POST(req: NextRequest) {
                 subscription,
                 subscription.customer as string
               )
-              console.log('CREATED FROM WEBHOOK 💳', subscription)
+              console.log('CREATED FROM WEBHOOK 💳', 'subscription')
             } else {
               console.log(
                 'SKIPPED AT CREATED FROM WEBHOOK 💳 because subscription status is not active',
-                "subscription"
+                'subscription'
               )
               break
             }

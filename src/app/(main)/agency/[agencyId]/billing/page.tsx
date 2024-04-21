@@ -35,7 +35,6 @@ const page = async ({ params }: Props) => {
     active: true,
   })
 
-  console.log("test agency subscription :", agencySubscription)
 
   const currentPlanDetails = pricingCards.find(
     (c) => c.priceId === agencySubscription?.Subscription?.priceId
