@@ -32,6 +32,7 @@ const LaunchPadPage = async({params, searchParams}: Props) => {
   agencyDetails.state &&
   agencyDetails.zipCode
 
+  const stripeOAuthLink = getStripeOAuthLink()
 
   return (
     <div className='flex flex-col justify-center items-center'>
