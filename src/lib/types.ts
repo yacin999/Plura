@@ -1,5 +1,5 @@
 import { Role, Notification, Prisma, Lane, Ticket, Tag, User, Contact, Pipeline } from "@prisma/client"
-import { _getTicketsWithAllRelations, getAuthUserDetails, getMedia, getPipelineDetails, getTicketsWithTags, getUserPermissions } from "./queries"
+import { _getTicketsWithAllRelations, getAuthUserDetails, getFunnels, getMedia, getPipelineDetails, getTicketsWithTags, getUserPermissions } from "./queries"
 import { db } from "./db"
 import { z } from "zod"
 import Stripe from "stripe"
@@ -136,3 +136,7 @@ export type StripeCustomerType = {
 
 
 export type PricesList = Stripe.ApiList<Stripe.Price>;
+
+
+// funnels type
+export type FunnelsForSubAccount = Prisma.PromiseReturnType<typeof getFunnels>[0]
