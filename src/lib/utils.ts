@@ -8,6 +8,11 @@ export function cn(...inputs: ClassValue[]) {
 
 
 
+// export function getStripeOAuthLink (accountType : "agency" | "subaccount", state : string) {
+//   return `https://marketplace.stripe.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL}&state=${state}`
+// }
+
 export function getStripeOAuthLink (accountType : "agency" | "subaccount", state : string) {
-  return `https://marketplace.stripe.com/oauth/v2/authorize?client_id=${process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL}&state=${state}`
+  return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID}&scope=read_write&redirect_uri=${process.env.NEXT_PUBLIC_URL}${accountType}&state=${state}`
+
 }
