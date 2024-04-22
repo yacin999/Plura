@@ -3,9 +3,9 @@
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { db } from "./db"
 import { redirect } from "next/navigation"
-import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket, Tag, Contact } from "@prisma/client"
+import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket, Tag, Contact, FunnelPage } from "@prisma/client"
 import { v4 } from "uuid"
-import { CreateFunnelFormSchema, CreateMediaType } from "./types"
+import { CreateFunnelFormSchema, CreateMediaType, UpsertFunnelPage } from "./types"
 import { da, tr } from "date-fns/locale"
 import { z } from "zod"
 
@@ -910,4 +910,28 @@ export const updateFunnelProducts = async (products : string , funnelId : string
   })
 
   return data
+}
+
+// update or create funnel page :
+export const upsertFunnelPage = async (
+  subaccountId : string,
+  funnelPage : UpsertFunnelPage,
+  funnelId : string
+) => {
+  if (!subaccountId || !funnelId) return
+  const response = await db.funnelPage.upsert({
+    where : {id : funnelId},
+    update : {...funnelPage},
+    create : {
+      ...funnelPage,
+      content : funnelPage.content ? funnelPage.content : JSON.stringify([{
+        content : [],
+        id : '__body',
+        name : 'Body',
+        styles : {backgroundColor : 'white'},
+        type : '__body'
+      }]),
+      funnelId
+    }
+  })
 }
