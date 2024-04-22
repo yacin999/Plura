@@ -866,3 +866,18 @@ export const upsertContact = async (contact : Prisma.ContactUncheckedCreateInput
 
   return response
 }
+
+
+// get funnels :
+export const getFunnels = async (subaccountId : string) => {
+  const funnels = await db.funnel.findMany({
+    where : {
+      subAccountId : subaccountId
+    },
+    include : {
+      FunnelPages : true
+    }
+  })
+
+  return funnels
+}
