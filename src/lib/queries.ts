@@ -6,7 +6,7 @@ import { redirect } from "next/navigation"
 import { Agency, Plan, User, SubAccount, Role, Media, Prisma, Lane, Ticket, Tag, Contact } from "@prisma/client"
 import { v4 } from "uuid"
 import { CreateFunnelFormSchema, CreateMediaType } from "./types"
-import { tr } from "date-fns/locale"
+import { da, tr } from "date-fns/locale"
 import { z } from "zod"
 
 export const getAuthUserDetails = async ()=>{
@@ -880,4 +880,34 @@ export const getFunnels = async (subaccountId : string) => {
   })
 
   return funnels
+}
+
+// get Funnel :
+export const getFunnel = async (funnelId : string) => {
+  const funnel = await db.funnel.findUnique({
+    where : {
+      id : funnelId
+    },
+    include : {
+      FunnelPages : {
+        orderBy : {
+          order : 'asc'
+        }
+      }
+    }
+  })
+
+  return funnel
+}
+
+// update funnel products :
+export const updateFunnelProducts = async (products : string , funnelId : string) => {
+  const data = await db.funnel.update({
+    where : {
+      id : funnelId
+    },
+    data : {liveProducts : products}
+  })
+
+  return data
 }
