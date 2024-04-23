@@ -16,6 +16,7 @@ import { Check, ExternalLink, LucideEdit } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { DragDropContext, DragStart, DropResult, Droppable } from 'react-beautiful-dnd'
+import FunnelStepCard from './funnel-step-card'
 
 type Props = {
     funnel : FunnelsForSubAccount,
@@ -101,12 +102,12 @@ const FunnelSteps = ({ funnel, subaccountId, pages, funnelId}: Props) => {
                               key={page.id}
                               onClick={() => setClickedPage(page)}
                             >
-                              {/* <FunnelStepCard
+                              <FunnelStepCard
                                 funnelPage={page}
                                 index={idx}
                                 key={page.id}
                                 activePage={page.id === clickedPage?.id}
-                              /> */}
+                              />
                             </div>
                           ))}
                         </div>

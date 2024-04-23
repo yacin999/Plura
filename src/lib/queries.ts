@@ -914,27 +914,32 @@ export const updateFunnelProducts = async (products : string , funnelId : string
 
 // update or create funnel page :
 export const upsertFunnelPage = async (
-  subaccountId : string,
-  funnelPage : UpsertFunnelPage,
-  funnelId : string
+  subaccountId: string,
+  funnelPage: UpsertFunnelPage,
+  funnelId: string
 ) => {
   if (!subaccountId || !funnelId) return
   const response = await db.funnelPage.upsert({
-    where : {id : funnelId},
-    update : {...funnelPage},
-    create : {
+    where: { id: funnelPage.id || '' },
+    update: { ...funnelPage },
+    create: {
       ...funnelPage,
-      content : funnelPage.content ? funnelPage.content : JSON.stringify([{
-        content : [],
-        id : '__body',
-        name : 'Body',
-        styles : {backgroundColor : 'white'},
-        type : '__body'
-      }]),
-      funnelId
-    }
+      content: funnelPage.content
+        ? funnelPage.content
+        : JSON.stringify([
+            {
+              content: [],
+              id: '__body',
+              name: 'Body',
+              styles: { backgroundColor: 'white' },
+              type: '__body',
+            },
+          ]),
+      funnelId,
+    },
   })
 
+  // revalidatePath(`/subaccount/${subaccountId}/funnels/${funnelId}`, 'page')
   return response
 }
 
