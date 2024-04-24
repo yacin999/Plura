@@ -29,3 +29,26 @@ export type EditorState = {
     editor : Editor
     history : HistoryState
 }
+
+const initialEditorState : EditorState["editor"] = {
+    elements : [
+        {
+            content : [],
+            id : '__body',
+            name : 'Body',
+            styles : {},
+            type : '__body'
+        }
+    ],
+    selectedElements : {
+        id : '',
+        content : [],
+        name : '',
+        styles : {},
+        type : null
+    },
+    device : "Desktop",
+    previewMode : false,
+    liveMode : false,
+    funnelPageId : ''
+}
