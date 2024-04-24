@@ -52,3 +52,23 @@ const initialEditorState : EditorState["editor"] = {
     liveMode : false,
     funnelPageId : ''
 }
+
+
+const initialHistoryState : HistoryState = {
+    history : [initialEditorState],
+    currentIndex : 0
+}
+
+
+const initialState: EditorState = {
+    editor: initialEditorState,
+    history: initialHistoryState,
+}
+
+
+const editorReducer = (
+    state : EditorState = initialState, 
+    action : EditorAction
+) => {
+
+}
