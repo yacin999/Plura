@@ -1,5 +1,6 @@
 import { EditorBtns } from "@/lib/constants"
 import React from "react"
+import { EditorAction } from "./editor-actions"
 
 export type DeviceTypes =  'Desktop' | 'Mobile' | 'Tablet'
 
@@ -66,9 +67,66 @@ const initialState: EditorState = {
 }
 
 
-const editorReducer = (
-    state : EditorState = initialState, 
+const addAnEelemnt = (
+    editorArray : EditorElement[],
     action : EditorAction
-) => {
+) : EditorElement[] => {
+    if (action.type !== "ADD_ELEMENT") 
+        throw Error("You send the wrong action type to add element editor state")
+        return  editorArray.map(item=> {
+            if (item.id === action.payload.containerId && Array.isArray(item.content)) {
+                return {
+                    ...item,
+                    content : [item.content, action.payload.elementDetails]
+                }
+            }else if ( item.content && Array.isArray(item.content)) {
+                return {
+                    ...item,
+                    content : addAnEelemnt(item.content, action)
+                }
+            }
 
+            return item
+        })
+}
+
+const editorReducer = (
+    state : EditorState = initialState,     
+    action : EditorAction
+) : EditorState => {
+    switch (action.type) {
+        case "ADD_ELEMENT" : 
+            const updatedEditorState = {
+                ...state.editor,
+                elements : addAnEelemnt(state.editor.elements, action)
+            }
+            const updatedHistory = [
+                ...state.history.history.slice(0, state.history.currentIndex + 1),
+                {...updatedEditorState}
+            ]
+
+            const newEditorState = {
+                ...state,
+                editor : updatedEditorState,
+                history : {
+                    ...state.history,
+                    history : updatedHistory,
+                    currentIndex : updatedHistory.length - 1
+                }
+            }
+
+            return newEditorState
+        
+        case "UPDATE_ELEMENT":
+        case "DELETE_ELEMENT":
+        case "CHANGE_CLICKED_ELEMENT":
+        case "CHANGE_DEVICE":
+        case "TOGGLE_PREVIEW_MODE":
+        case "TOGGLE_LIVE_MODE":
+        case "REDO":
+        case "UNDO":
+        case "LOAD_DATA":
+        case "SET_FUNNELPAGE_ID":
+        default : return state
+    }
 }
