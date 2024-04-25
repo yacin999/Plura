@@ -145,6 +145,35 @@ const editorReducer = (
         
         case "UPDATE_ELEMENT":
             const updatedElements = updateAnElement(state.editor.elements, action)
+            const updatedElementIsSelected = state.editor.selectedElements.id === action.payload.elementDetails.id
+            const updatedEditorStateWithUpdate = {
+                ...state.editor,
+                elements : updatedElements,
+                selectedElements : updatedElementIsSelected ? action.payload.elementDetails : {
+                    id : '',
+                    content : [],
+                    name : '',
+                    styles : {},
+                    type : null
+                },
+
+            }
+            const updatedHistoryWithUpdate = [
+                ...state.history.history.slice(0, state.history.currentIndex + 1),
+                {...updatedEditorStateWithUpdate}, // save a copy of the updated state
+            ]
+
+            const updatedEditor = {
+                ...state,
+                editor : updatedEditorStateWithUpdate,
+                history : {
+                    ...state.history,
+                    history : updatedHistoryWithUpdate,
+                    currentIndex : updatedHistoryWithUpdate.length - 1 
+                }
+            }
+
+            return updatedEditor
         case "DELETE_ELEMENT":
         case "CHANGE_CLICKED_ELEMENT":
         case "CHANGE_DEVICE":
