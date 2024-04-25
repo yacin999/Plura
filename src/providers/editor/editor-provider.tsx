@@ -90,6 +90,32 @@ const addAnEelemnt = (
         })
 }
 
+
+const updateAnElement = (
+    editorArray : EditorElement[],
+    action : EditorAction
+) : EditorElement[] => {
+    if (action.type !== "UPDATE_ELEMENT") {
+        throw Error("You send the wrong action type to the update element state")
+    }
+
+    return editorArray.map(item => {
+        if (item.id === action.payload.elementDetails.id) {
+            return {
+                ...item, 
+                ...action.payload.elementDetails
+            }
+        }else if (item.content && Array.isArray(item.content)) {
+            return {
+                ...item,
+                content : updateAnElement(item.content, action)
+            }
+        }
+        return item
+    })
+}
+
+
 const editorReducer = (
     state : EditorState = initialState,     
     action : EditorAction
@@ -118,6 +144,7 @@ const editorReducer = (
             return newEditorState
         
         case "UPDATE_ELEMENT":
+            const updatedElements = updateAnElement(state.editor.elements, action)
         case "DELETE_ELEMENT":
         case "CHANGE_CLICKED_ELEMENT":
         case "CHANGE_DEVICE":
