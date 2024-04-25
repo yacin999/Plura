@@ -115,6 +115,23 @@ const updateAnElement = (
     })
 }
 
+const deleteAnElement = (
+    editorArray: EditorElement[],
+    action: EditorAction
+  ): EditorElement[] => {
+    if (action.type !== 'DELETE_ELEMENT')
+      throw Error(
+        'You sent the wrong action type to the Delete Element editor State'
+      )
+    return editorArray.filter((item) => {
+      if (item.id === action.payload.elementDetails.id) {
+        return false
+      } else if (item.content && Array.isArray(item.content)) {
+        item.content = deleteAnElement(item.content, action)
+      }
+      return true
+    })
+  }
 
 const editorReducer = (
     state : EditorState = initialState,     
@@ -175,6 +192,11 @@ const editorReducer = (
 
             return updatedEditor
         case "DELETE_ELEMENT":
+            const updatedElementsAfterDelete = deleteAnElement(state.editor.elements, action)
+            const updatedEditorStateAfterDelete = {
+                ...state.editor,
+                elements : updatedElementsAfterDelete
+            }
         case "CHANGE_CLICKED_ELEMENT":
         case "CHANGE_DEVICE":
         case "TOGGLE_PREVIEW_MODE":
