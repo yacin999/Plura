@@ -13,12 +13,12 @@ export type EditorElement = {
 }
 
 export type Editor = {
-    liveMode : boolean,
-    elements : EditorElement[]
-    selectedElements : EditorElement
-    device : DeviceTypes
-    previewMode : boolean
-    funnelPageId : string
+    liveMode: boolean
+    elements: EditorElement[]
+    selectedElement: EditorElement
+    device: DeviceTypes
+    previewMode: boolean
+    funnelPageId: string
 }
 
 export type HistoryState = {
@@ -41,7 +41,7 @@ const initialEditorState : EditorState["editor"] = {
             type : '__body'
         }
     ],
-    selectedElements : {
+    selectedElement : {
         id : '',
         content : [],
         name : '',
@@ -162,7 +162,7 @@ const editorReducer = (
         
         case "UPDATE_ELEMENT":
             const updatedElements = updateAnElement(state.editor.elements, action)
-            const updatedElementIsSelected = state.editor.selectedElements.id === action.payload.elementDetails.id
+            const updatedElementIsSelected = state.editor.selectedElement.id === action.payload.elementDetails.id
             const updatedEditorStateWithUpdate = {
                 ...state.editor,
                 elements : updatedElements,
@@ -236,7 +236,16 @@ const editorReducer = (
                     currentIndex : state.history.currentIndex + 1
                 }
             }
-        case "CHANGE_DEVICE":
+            return clickedState
+        case 'CHANGE_DEVICE':
+            const changedDeviceState = {
+                ...state,
+                editor: {
+                ...state.editor,
+                device: action.payload.device,
+                },
+            }
+            return changedDeviceState
         case "TOGGLE_PREVIEW_MODE":
         case "TOGGLE_LIVE_MODE":
         case "REDO":
