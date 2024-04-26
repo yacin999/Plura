@@ -247,7 +247,24 @@ const editorReducer = (
             }
             return changedDeviceState
         case "TOGGLE_PREVIEW_MODE":
+            const toggleState = {
+                ...state,
+                editor : {
+                    ...state.editor,
+                    previewMode : !state.editor.previewMode
+                }
+            }
+            return toggleState
         case "TOGGLE_LIVE_MODE":
+            const toggleLiveState = {
+                ...state,
+                editor : {
+                    ...state.editor,
+                    liveMode : action.payload ? action.payload.value : !state.editor.liveMode
+                }
+            }
+            return toggleLiveState
+
         case "REDO":
         case "UNDO":
         case "LOAD_DATA":
