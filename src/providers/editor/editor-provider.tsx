@@ -264,8 +264,15 @@ const editorReducer = (
                 }
             }
             return toggleLiveState
-
         case "REDO":
+            if (state.history.currentIndex < state.history.history.length - 1 ) {
+                const nextIndex = state.history.currentIndex + 1
+                const nextEditorState = {...state.history.history[nextIndex]}
+                const redoState = {
+                    ...state,
+                    
+                }
+            }
         case "UNDO":
         case "LOAD_DATA":
         case "SET_FUNNELPAGE_ID":
