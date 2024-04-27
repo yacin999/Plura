@@ -299,6 +299,14 @@ const editorReducer = (
             if (dataFromStorage) return JSON.parse(dataFromStorage)
             else return state
         case "LOAD_DATA":
+            return {
+                ...initialState,
+                editor : {
+                    ...initialState.editor,
+                    elements : action.payload.elements || initialState.editor.elements,
+                    liveMode : !!action.payload.withLive
+                }
+            }
         case "SET_FUNNELPAGE_ID":
         default : return state
     }
