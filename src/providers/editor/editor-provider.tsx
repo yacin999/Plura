@@ -1,3 +1,5 @@
+"use client"
+
 import { EditorBtns } from "@/lib/constants"
 import React, { Dispatch, createContext, useContext, useReducer } from "react"
 import { EditorAction } from "./editor-actions"
