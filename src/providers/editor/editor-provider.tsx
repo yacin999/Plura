@@ -308,6 +308,29 @@ const editorReducer = (
                 }
             }
         case "SET_FUNNELPAGE_ID":
+            const {funnelPageId} = action.payload
+
+            const updatedEditorStateWithFunnelPageId = {
+                ...state.editor,
+                funnelPageId
+            }
+
+            const updatedHistoryStateWithFunnelPageId = [
+                ...state.history.history.slice(0, state.history.currentIndex + 1),
+                { ...updatedEditorStateWithFunnelPageId }
+            ]
+
+            const funnelPageIdState = {
+                ...state,
+                editor : updatedEditorStateWithFunnelPageId,
+                history : {
+                    ...state.history,
+                    history : updatedHistoryStateWithFunnelPageId,
+                    currentIndex : updatedHistoryStateWithFunnelPageId.length - 1
+                }
+            }
+
+            return funnelPageIdState
         default : return state
     }
 }
