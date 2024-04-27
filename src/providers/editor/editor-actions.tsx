@@ -53,6 +53,12 @@ export type EditorAction =
     }
   | { type: 'REDO' }
   | { type: 'UNDO' }
+  | { 
+      type: 'LOAD_LOCAL_STORAGE'
+      payload : {
+        funnelPageId : string
+      }
+    }
   | {
       type: 'LOAD_DATA'
       payload: {

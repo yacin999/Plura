@@ -158,8 +158,7 @@ const editorReducer = (
                 }
             }
 
-            return newEditorState
-        
+            return newEditorState   
         case "UPDATE_ELEMENT":
             const updatedElements = updateAnElement(state.editor.elements, action)
             const updatedElementIsSelected = state.editor.selectedElement.id === action.payload.elementDetails.id
@@ -270,10 +269,35 @@ const editorReducer = (
                 const nextEditorState = {...state.history.history[nextIndex]}
                 const redoState = {
                     ...state,
-                    
+                    editor : nextEditorState,
+                    history : {
+                        ...state.history,
+                        currentIndex : nextIndex
+                    }
                 }
+
+                return redoState
             }
+            return state
         case "UNDO":
+            if (state.history.currentIndex > 0 ) {
+                const prevIndex = state.history.currentIndex - 1
+                const prevEditorState = {...state.history.history[prevIndex]}
+                const undoState = {
+                    ...state,
+                    editor : prevEditorState,
+                    history : {
+                        ...state.history,
+                        currentIndex : prevIndex
+                    }
+                }
+                return undoState
+            }
+            return state
+        case "LOAD_LOCAL_STORAGE":
+            const dataFromStorage = localStorage.getItem(action.payload.funnelPageId) 
+            if (dataFromStorage) return JSON.parse(dataFromStorage)
+            else return state
         case "LOAD_DATA":
         case "SET_FUNNELPAGE_ID":
         default : return state
