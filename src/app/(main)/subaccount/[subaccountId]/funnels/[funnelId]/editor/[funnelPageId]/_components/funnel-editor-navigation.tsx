@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { toast } from "sonner"
-import { upsertFunnelPage } from '@/lib/queries'
+import { saveActivityLogsNotification, upsertFunnelPage } from '@/lib/queries'
 import { DeviceTypes, useEditor } from '@/providers/editor/editor-provider'
 import { FunnelPage } from '@prisma/client'
 import clsx from 'clsx'
@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import React, { FocusEventHandler, useEffect } from 'react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
 
 type Props = {
     funnelId : string,
@@ -70,6 +71,33 @@ const FunnelEditorNavigation = ({funnelId, funnelPageDetails, subaccountId}: Pro
         dispatch({
             type : "REDO"
         })
+    }
+
+    const handleOnSave = async()=> {
+        const content = JSON.stringify(state.editor.elements)
+        console.log("save editor content :", content)
+        try {
+            const response = await upsertFunnelPage(
+                subaccountId,
+                {
+                    ...funnelPageDetails,
+                    content
+                },
+                funnelId
+            )
+            await saveActivityLogsNotification({
+                agencyId : undefined,
+                description : `Updated a funnel page | ${response?.name}`,
+                subaccountId
+            })
+            toast("Success", {
+                description : "Saved Editor"
+            })
+        } catch (error) {
+            toast("Opps!", {
+                description : "Could not save editor"
+            })
+        }
     }
   return (
     <TooltipProvider>
@@ -165,6 +193,7 @@ const FunnelEditorNavigation = ({funnelId, funnelPageDetails, subaccountId}: Pro
                     <EyeIcon/>
                 </Button>
                 <Button
+                    variant={'ghost'}
                     disabled={!(state.history.currentIndex > 0)}
                     onClick={handleUndo}
                     size={'icon'}
@@ -173,13 +202,30 @@ const FunnelEditorNavigation = ({funnelId, funnelPageDetails, subaccountId}: Pro
                     <Undo2/>
                 </Button>
                 <Button
+                    variant={'ghost'}
                     disabled={!(state.history.currentIndex < state.history.history.length - 1)}
                     onClick={handleRedo}
                     size={'icon'}
-                    className="hover:bg-slate-800"
+                    className="hover:bg-slate-800 mr-4"
                 >
                     <Redo2/>
                 </Button>
+                <div className='flex flex-col items-center mr-4'>
+                    <div className='flex flex-row items-center gap-4'>
+                        Draft
+                        <Switch
+                            disabled
+                            defaultChecked={true}
+                        />
+                        Publish
+                    </div>
+                    <span className='text-muted-foreground text-sm'>
+                        Last Updated {funnelPageDetails.updatedAt.toLocaleDateString()}
+                    </span>
+                </div>
+                <Button
+                    onClick={handleOnSave}
+                >Save</Button>
             </aside>
         </nav>
     </TooltipProvider>
