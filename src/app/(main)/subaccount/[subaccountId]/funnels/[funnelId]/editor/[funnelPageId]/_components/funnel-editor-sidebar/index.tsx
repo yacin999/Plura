@@ -5,7 +5,7 @@ import { Tabs } from '@/components/ui/tabs'
 import { useEditor } from '@/providers/editor/editor-provider'
 import clsx from 'clsx'
 import React from 'react'
-import TabList from './tabs/components-tab'
+import TabList from './tabs'
 
 type Props = {
   subaccountId : string
