@@ -66,6 +66,7 @@ const MenuOptions = ({
         </SheetTrigger>
 
         <SheetContent 
+            showX={true}
             side={'left'}
             className={clsx('bg-background/80 backdrop-blur-xl fixed top-0 border-r-[1px] p-6', {
                 'hidden md:inline-block z-0 w-[300px]' : defaultOpen,
