@@ -1,8 +1,11 @@
 "use client"
 
-import { Sheet } from '@/components/ui/sheet'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { Tabs } from '@/components/ui/tabs'
 import { useEditor } from '@/providers/editor/editor-provider'
+import clsx from 'clsx'
 import React from 'react'
+import TabList from './tabs/components-tab'
 
 type Props = {
   subaccountId : string
@@ -14,7 +17,22 @@ const FunnelEditorSidebar = ({subaccountId}: Props) => {
     <Sheet
       open={true}
       modal={false}
-    ></Sheet>
+    >
+      <Tabs
+        className='w-full'
+        defaultValue='Settings'
+      >
+        <SheetContent
+          showX={false}
+          side='right'
+          className={clsx(
+            'mt-[97px] w-60 z-[80] shadow-none p-0 focus:border-none transition-all overflow-hidden',
+            {hidden : state.editor.previewMode}
+          )}>
+            <TabList/>
+          </SheetContent>
+      </Tabs>
+    </Sheet>
   )
 }
 
