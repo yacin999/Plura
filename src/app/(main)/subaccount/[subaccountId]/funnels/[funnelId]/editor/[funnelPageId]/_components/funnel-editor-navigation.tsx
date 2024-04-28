@@ -7,11 +7,12 @@ import { upsertFunnelPage } from '@/lib/queries'
 import { DeviceTypes, useEditor } from '@/providers/editor/editor-provider'
 import { FunnelPage } from '@prisma/client'
 import clsx from 'clsx'
-import { ArrowLeftCircle, Laptop, Smartphone, Tablet } from 'lucide-react'
+import { ArrowLeftCircle, EyeIcon, Laptop, Redo2, Smartphone, Tablet, Undo2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { FocusEventHandler, useEffect } from 'react'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
 
 type Props = {
     funnelId : string,
@@ -52,6 +53,23 @@ const FunnelEditorNavigation = ({funnelId, funnelPageDetails, subaccountId}: Pro
             })
             event.target.value = funnelPageDetails.name
         }
+    }
+
+    const handlePreviewClick = () => {
+        dispatch({type : "TOGGLE_PREVIEW_MODE"})
+        dispatch({type : "TOGGLE_LIVE_MODE"})
+    }
+
+    const handleUndo = () => {
+        dispatch({
+            type : "UNDO"
+        })
+    }
+
+    const handleRedo = () => {
+        dispatch({
+            type : "REDO"
+        })
     }
   return (
     <TooltipProvider>
@@ -136,6 +154,32 @@ const FunnelEditorNavigation = ({funnelId, funnelPageDetails, subaccountId}: Pro
                         </Tooltip>
                     </TabsList>
                 </Tabs>
+            </aside>
+            <aside className='flex items-center gap-2'>
+                <Button
+                    variant={'ghost'}
+                    size={'icon'}
+                    className="hover:bg-slate-800"
+                    onClick={handlePreviewClick}
+                >
+                    <EyeIcon/>
+                </Button>
+                <Button
+                    disabled={!(state.history.currentIndex > 0)}
+                    onClick={handleUndo}
+                    size={'icon'}
+                    className="hover:bg-slate-800"
+                >
+                    <Undo2/>
+                </Button>
+                <Button
+                    disabled={!(state.history.currentIndex < state.history.history.length - 1)}
+                    onClick={handleRedo}
+                    size={'icon'}
+                    className="hover:bg-slate-800"
+                >
+                    <Redo2/>
+                </Button>
             </aside>
         </nav>
     </TooltipProvider>
