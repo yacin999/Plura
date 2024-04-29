@@ -10,8 +10,25 @@ type Props = {}
 const SettingsTab = (props: Props) => {
     const {state, dispatch} = useEditor()
 
-    const handleChnageCustomValues = () => {
-        
+    const handleChnageCustomValues = (e:any) => {
+        const settingProperty = e.target.id
+        let value = e.target.value
+        const styleObject = {
+            [settingProperty] : value
+        }
+
+        dispatch({
+            type : "UPDATE_ELEMENT",
+            payload : {
+                elementDetails : {
+                    ...state.editor.selectedElement,
+                    content : {
+                        ...state.editor.selectedElement.content,
+                        ...styleObject
+                    }
+                }
+            }
+        })
     }
   return (
     <Accordion
