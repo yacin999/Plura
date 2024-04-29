@@ -1,9 +1,10 @@
 "use client"
 
+import { Button } from '@/components/ui/button'
 import { getfunnelPageDetails } from '@/lib/queries'
 import { useEditor } from '@/providers/editor/editor-provider'
 import clsx from 'clsx'
-import { stat } from 'fs'
+import { EyeOff } from 'lucide-react'
 import React, { useEffect } from 'react'
 
 type Props = {
@@ -44,6 +45,19 @@ const FunnelEditor = ({funnelPageId, liveMode}: Props) => {
         fetchData()
     }, [funnelPageId])
     
+
+    const handleClick = () => {
+        dispatch({
+            type : "CHANGE_CLICKED_ELEMENT",
+            payload : {}
+        })
+    }
+
+    const handleUnpreview = () => {
+        dispatch({
+            type : "TOGGLE_PREVIEW_MODE",
+        })
+    }
     return (
         <div 
             className={clsx(
@@ -55,7 +69,19 @@ const FunnelEditor = ({funnelPageId, liveMode}: Props) => {
                     'w-full' : state.editor.device === "Desktop"
                 }
             )}
-        ></div>
+            onClick={handleClick}
+        >
+            {state.editor.previewMode && state.editor.liveMode && (
+                <Button
+                    variant={'ghost'}
+                    size={'icon'}
+                    className='w-6 h-6 bg-slate-600 p-[2px] fixed top-0 left-0 z-[100]'
+                    onClick={handleUnpreview}
+                >
+                    <EyeOff/>
+                </Button>
+            )}
+        </div>
     )
 }
 
