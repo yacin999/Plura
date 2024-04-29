@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import FunnelEditorNavigation from './_components/funnel-editor-navigation'
 import FunnelEditorSidebar from './_components/funnel-editor-sidebar'
+import FunnelEditor from './_components/funnel-editor'
 
 type Props = {
   params : {
@@ -37,6 +38,11 @@ const Page = async ({params}: Props) => {
           funnelPageDetails = {funnelPageDetails}
           subaccountId = {params.subaccountId}
         />
+        <div className='h-full flex justity-center'>
+          <FunnelEditor
+            funnelPageId={params.funnelPageId}
+          />
+        </div>
         <FunnelEditorSidebar
           subaccountId={params.subaccountId}
         />
