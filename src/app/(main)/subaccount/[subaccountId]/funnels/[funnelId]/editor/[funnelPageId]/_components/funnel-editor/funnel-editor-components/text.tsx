@@ -15,15 +15,27 @@ const TextComponent = (props: Props) => {
         dispatch({
             type : "DELETE_ELEMENT",
             payload : {
-                elementDetails : state.editor.selectedElement
+                elementDetails : props.element
             }
         })
     } 
+    
+    const styles = props.element.styles
+    const handleOnClickBody = (e : React.MouseEvent) => {
+        e.stopPropagation()
+        dispatch({
+            type : "CHANGE_CLICKED_ELEMENT",
+            payload : {
+                elementDetails : props.element
+            }
+        })
+    }
+
 
   return (
     // WE ARE NOT ADDING DRAG DROP
     <div 
-        draggable
+        style={styles}
         className={clsx(
             'p-[2px] w-full m-[5px] relative text-[16px] transition-all',
             {
@@ -32,6 +44,7 @@ const TextComponent = (props: Props) => {
                 'border-dashed border-[1px] border-slate-300' : !state.editor.liveMode
             }
         )}
+        onClick={handleOnClickBody}
     >
         {
             state.editor.selectedElement.id === props.element.id && !state.editor.liveMode && (
