@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { v4 } from 'uuid'
 import { defaultStyles } from '@/lib/constants' 
-import { Badge } from 'lucide-react'
+import { Badge, Trash } from 'lucide-react'
 import Recursive from './recursive'
 
 type Props = {
@@ -173,6 +173,15 @@ const Container = ({element }: Props) => {
             }
         })
     }
+
+    const handleDeleteElement = () => {
+        dispatch({
+            type : "DELETE_ELEMENT",
+            payload : {
+                elementDetails : element
+            }
+        })
+    }
     return (
     <div 
         style={styles}
@@ -217,6 +226,15 @@ const Container = ({element }: Props) => {
                 element={childElemnt}
             />
         ))}
+
+        {state.editor.selectedElement.id === element.id && !state.editor.liveMode && state.editor.selectedElement.type !== "__body" && (
+            <div className='absolute bg-primary px-2.5 py-1 text-xs font-bold -top-[25px] -right-[1px] rounded-none rounded-t-lg'>
+                <Trash
+                    size={16}
+                    onClick={handleDeleteElement}
+                />
+            </div>
+        )}
     </div>
   )
 }
