@@ -54,9 +54,8 @@ const FunnelEditor = ({funnelPageId, liveMode}: Props) => {
     }
 
     const handleUnpreview = () => {
-        dispatch({
-            type : "TOGGLE_PREVIEW_MODE",
-        })
+        dispatch({type : "TOGGLE_PREVIEW_MODE",})
+        dispatch({type : "TOGGLE_LIVE_MODE"})
     }
     return (
         <div 
