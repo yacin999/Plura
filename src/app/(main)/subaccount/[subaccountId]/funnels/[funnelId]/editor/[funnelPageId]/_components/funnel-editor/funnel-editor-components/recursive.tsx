@@ -1,3 +1,5 @@
+"use client"
+
 import { EditorElement } from '@/providers/editor/editor-provider';
 import React from 'react'
 import TextComponent from './text';
@@ -9,7 +11,7 @@ type Props = {
 const Recursive = ({element}: Props) => {
   switch (element.type) {
     case "text":
-        return <TextComponent/>  
+        return <TextComponent element={element}/>  
     default:
         return null
   }
