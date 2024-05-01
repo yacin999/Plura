@@ -1,6 +1,8 @@
 "use client"
 
+import { Badge } from '@/components/ui/badge'
 import { EditorElement, useEditor } from '@/providers/editor/editor-provider'
+import clsx from 'clsx'
 import React from 'react'
 
 type Props = {
@@ -31,7 +33,21 @@ const VideoComponent = (props: Props) => {
         draggable
         onDragStart={e=> handleDragStart(e, 'video')}    
         onClick={handleOnClick}
-    ></div>
+        className={clsx(
+            "p-[2px] w-full m-[5px] relative text-[16px] transition-all flex items-center justify-center",
+            {
+                '!border-blue-500' : state.editor.selectedElement.id === props.element.id,
+                '!border-solid' : state.editor.selectedElement.id === props.element.id,
+                'border-dashed border-[1px] border-t-slate-300' : !state.editor.liveMode
+            }
+        )}
+    >
+        {state.editor.selectedElement.id === props.element.id && !state.editor.liveMode && (
+            <Badge className="absolute -top-[23px] -left-[1px] rounded-none rounded-t-lg">
+                {state.editor.selectedElement.name}
+            </Badge>
+        )}
+    </div>
   )
 }
 
