@@ -15,6 +15,8 @@ const Recursive = ({element}: Props) => {
         return <TextComponent element={element}/>  
     case "__body" :
         return <Container element={element}/>
+    case 'container' :
+        return <Container element={element}/>
     default:
         return null
   }
