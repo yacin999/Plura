@@ -6,9 +6,10 @@ type Props = {}
 const TextPlaceholder = (props: Props) => {
 
     const handleDragStart = (e : React.DragEvent, type : string) => {
-        if (type === "null") {
+
+        if (type === "null") return
           e.dataTransfer.setData("componentType", type)
-        }
+        
     }
   return (
     <div 

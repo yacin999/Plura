@@ -1,6 +1,7 @@
+import { Badge } from '@/components/ui/badge'
 import { EditorElement, useEditor } from '@/providers/editor/editor-provider'
 import clsx from 'clsx'
-import { Badge, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import React from 'react'
 
 type Props = {
