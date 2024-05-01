@@ -38,7 +38,7 @@ const Page = async ({params}: Props) => {
           funnelPageDetails = {funnelPageDetails}
           subaccountId = {params.subaccountId}
         />
-        <div className='h-full flex justity-center'>
+        <div className='h-full flex justify-center'>
           <FunnelEditor
             funnelPageId={params.funnelPageId}
           />
