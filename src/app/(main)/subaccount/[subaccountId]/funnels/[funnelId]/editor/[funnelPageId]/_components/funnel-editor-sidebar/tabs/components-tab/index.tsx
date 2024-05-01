@@ -2,6 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { EditorBtns } from '@/lib/constants'
 import React from 'react'
 import TextPlaceholder from './text-placeholder'
+import ContainerPlaceholder from './container-placeholder'
 
 type Props = {}
 
@@ -17,7 +18,13 @@ const ComponentsTab = (props: Props) => {
             label : 'Text',
             id : 'text',
             group : 'elements'
-        }
+        },
+        {
+            Component : <ContainerPlaceholder/>,
+            label : 'Container',
+            id : 'container',
+            group : 'layout'
+        },
     ]
     return (
         <Accordion
