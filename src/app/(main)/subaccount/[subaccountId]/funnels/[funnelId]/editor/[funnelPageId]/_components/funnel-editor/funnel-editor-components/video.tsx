@@ -57,6 +57,17 @@ const VideoComponent = (props: Props) => {
                 {state.editor.selectedElement.name}
             </Badge>
         )}
+
+        {!Array.isArray(props.element.content) && (
+            <iframe
+                width={props.element.styles.width || '560'}
+                height={props.element.styles.height || '315'}
+                src={props.element.content.src}
+                title='Youtube video player'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+            />
+        )}
+
         {state.editor.selectedElement.id === props.element.id && !state.editor.liveMode && (
             <div className='absolute bg-primary px-2.5 py-1 text-xs font-bold -top-[25px] -right-[1px] rounded-none rounded-t-lg !text-white'>
                 <Trash
