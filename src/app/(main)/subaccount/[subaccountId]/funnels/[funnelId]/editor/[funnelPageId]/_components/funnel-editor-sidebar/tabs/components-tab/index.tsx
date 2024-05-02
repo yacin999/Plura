@@ -4,6 +4,7 @@ import React from 'react'
 import TextPlaceholder from './text-placeholder'
 import ContainerPlaceholder from './container-placeholder'
 import VideoPlaceholder from './video-placeholder'
+import LinkPlaceholder from './link-placeholder'
 
 type Props = {}
 
@@ -31,6 +32,12 @@ const ComponentsTab = (props: Props) => {
             label : 'Video',
             id : 'video',
             group : 'layout'
+        },
+        {
+            Component : <LinkPlaceholder/>,
+            label : 'Link',
+            id : 'link',
+            group : 'elements'
         },
     ]
     return (
