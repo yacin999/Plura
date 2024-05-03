@@ -6,6 +6,8 @@ import TextComponent from './text';
 import Container from './container';
 import VideoComponent from './video';
 import LinkComponent from './link-component';
+import TwoColumns from './two-columns';
+import ContactFormComponenet from './contact-form-component';
 
 type Props = {
     element : EditorElement
@@ -23,6 +25,10 @@ const Recursive = ({element}: Props) => {
         return <VideoComponent element={element}/>
     case "link" :
         return <LinkComponent element={element}/>
+    case "2Col" : 
+        return <TwoColumns element={element}/>
+    case "contactForm":
+        return <ContactFormComponenet element={element}/>
     default:
         return null
   }
