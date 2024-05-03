@@ -5,6 +5,7 @@ import TextPlaceholder from './text-placeholder'
 import ContainerPlaceholder from './container-placeholder'
 import VideoPlaceholder from './video-placeholder'
 import LinkPlaceholder from './link-placeholder'
+import TwoColumnsPlaceholder from './two-columns-placeholder'
 
 type Props = {}
 
@@ -38,6 +39,12 @@ const ComponentsTab = (props: Props) => {
             label : 'Link',
             id : 'link',
             group : 'elements'
+        },
+        {
+            Component : <TwoColumnsPlaceholder/>,
+            label: '2 Columns',
+            id: '2Col',
+            group: 'layout',
         },
     ]
     return (
