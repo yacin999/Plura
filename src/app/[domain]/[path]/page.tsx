@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 const Page = async ({params} : {params : {domain : string}}) => {
+  console.log("test page pathname :", params?.domain)
   const domainData = await getDomainContent(params.domain.slice(0, -1))
 
   if (!domainData) return notFound()
