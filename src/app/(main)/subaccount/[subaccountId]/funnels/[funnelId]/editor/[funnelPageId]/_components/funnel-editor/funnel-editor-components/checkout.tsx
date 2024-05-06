@@ -129,6 +129,8 @@ const Checkout = (props: Props) => {
     })
   }
 
+  
+
   return (
     <div
       style={styles}
