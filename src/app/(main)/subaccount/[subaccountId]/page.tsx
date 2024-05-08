@@ -1,6 +1,7 @@
 import BlurPage from '@/components/global/blur-page'
 import CircleProgress from '@/components/global/circle-progress'
 import PipelineValue from '@/components/global/pipeline-value'
+import SubaccountFunnelChart from '@/components/global/subaccount-funnel-chart'
 // import SubaccountFunnelChart from '@/components/global/subaccount-funnel-chart'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -211,7 +212,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
             </Card>
           </div>
 
-          {/* <div className="flex gap-4 flex-col xl:!flex-row">
+           <div className="flex gap-4 flex-col xl:!flex-row">
             <Card className="relative">
               <CardHeader>
                 <CardDescription>Funnel Performance</CardDescription>
@@ -240,7 +241,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
               />
             </Card>
           </div>
-          <div className="flex gap-4 xl:!flex-row flex-col">
+          {/*<div className="flex gap-4 xl:!flex-row flex-col">
             <Card className="p-4 flex-1 h-[450px] overflow-scroll relative">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
