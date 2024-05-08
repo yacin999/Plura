@@ -179,7 +179,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
             </Card>
             <PipelineValue subaccountId={params.subaccountId} />
 
-            {/* <Card className="xl:w-fit">
+            <Card className="xl:w-fit">
               <CardHeader>
                 <CardDescription>Conversions</CardDescription>
                 <CircleProgress
@@ -208,7 +208,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
                   }
                 />
               </CardHeader>
-            </Card> */}
+            </Card>
           </div>
 
           {/* <div className="flex gap-4 flex-col xl:!flex-row">
