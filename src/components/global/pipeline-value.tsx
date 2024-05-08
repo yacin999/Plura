@@ -3,7 +3,9 @@
 import { getPipelines } from '@/lib/queries'
 import { Prisma } from '@prisma/client'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Card, CardDescription, CardHeader } from '../ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '../ui/card'
+import { Progress } from '../ui/progress'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
 
 type Props = {
     subaccountId : string
@@ -43,14 +45,52 @@ const PipelineValue = ({subaccountId}: Props) => {
     }, [selectedPipelineId, pipelines])
     
     const pipelineRate = useMemo(()=>{
-      (pipelineClosedValue / (totalPipelineValue + pipelineClosedValue)) * 100
+      return (pipelineClosedValue / (totalPipelineValue + pipelineClosedValue)) * 100
     }, [pipelineClosedValue, totalPipelineValue])
     return (
     <Card className='relative w-full xl:w-[350px]'>
       <CardHeader>
         <CardDescription>Pipeline Value</CardDescription>
         <small className='text-xs text-muted-foreground'>Pipeline Progress</small>
+        <div className='flex items-center justify-between'>
+          <div>
+            <p className='text-xs text-muted-foreground'>Closed {pipelineClosedValue}</p>
+          </div>
+          <div >
+            <p className='text-xs text-muted-foreground'>Total {totalPipelineValue + pipelineClosedValue}</p>
+          </div>
+        </div>
+        <Progress
+          color='green'
+          value={pipelineRate}
+          className='h-2'
+        />
       </CardHeader>
+      <CardContent className='text-sm text-muted-foreground'>
+        <p className='mb-2'>
+          Total value in all tickets in the given pipeline except the last lane. 
+          Your last lane is considered your closing lane in every pipeline.
+        </p>
+        <Select
+          value={selectedPipelineId}
+          onValueChange={setSelectedPipelineId}
+        >
+          <SelectTrigger className='w-[180px]'>
+            <SelectValue placeholder='Select a pipeline'/>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Pipelines</SelectLabel>
+              {pipelines.map(pipeline=>(
+                <SelectItem 
+                  value={pipeline.id}
+                  key={pipeline.id}
+                >{pipeline.name}</SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </CardContent>
     </Card>
   )
 }
