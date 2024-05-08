@@ -241,7 +241,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
               />
             </Card>
           </div>
-          {/*<div className="flex gap-4 xl:!flex-row flex-col">
+          <div className="flex gap-4 xl:!flex-row flex-col">
             <Card className="p-4 flex-1 h-[450px] overflow-scroll relative">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -293,7 +293,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
                 </Table>
               </CardHeader>
             </Card>
-          </div> */}
+          </div>
         </div>
       </div>
     </BlurPage>
