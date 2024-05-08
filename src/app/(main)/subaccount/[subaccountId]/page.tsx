@@ -1,7 +1,7 @@
 import BlurPage from '@/components/global/blur-page'
 import CircleProgress from '@/components/global/circle-progress'
 import PipelineValue from '@/components/global/pipeline-value'
-import SubaccountFunnelChart from '@/components/global/subaccount-funnel-chart'
+// import SubaccountFunnelChart from '@/components/global/subaccount-funnel-chart'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
@@ -217,7 +217,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
                 <CardDescription>Funnel Performance</CardDescription>
               </CardHeader>
               <CardContent className=" text-sm text-muted-foreground flex flex-col gap-12 justify-between ">
-                <SubaccountFunnelChart data={funnelPerformanceMetrics} />
+                {/* <SubaccountFunnelChart data={funnelPerformanceMetrics} /> */}
                 <div className="lg:w-[150px]">
                   Total page visits across all funnels. Hover over to get more
                   details on funnel page performance.
