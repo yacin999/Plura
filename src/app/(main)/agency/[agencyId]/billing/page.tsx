@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import PricingCard from './_components/pricing-card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import clsx from 'clsx'
+import SubscriptionHelper from './_components/subscription-helper'
 
 
 type Props = {
@@ -35,6 +36,7 @@ const page = async ({ params }: Props) => {
     active: true,
   })
 
+  console.log("test prices from billing :", prices)
 
   const currentPlanDetails = pricingCards.find(
     (c) => c.priceId === agencySubscription?.Subscription?.priceId
@@ -59,6 +61,11 @@ const page = async ({ params }: Props) => {
 
   return (
     <>
+    <SubscriptionHelper
+      prices={prices.data}
+      customerId={agencySubscription?.customerId || ''}
+      planExists={agencySubscription?.Subscription?.active === true}
+    />
       <h1 className="text-4xl p-4">Billing</h1>
       <Separator className=" mb-6" />
       <h2 className="text-2xl p-4">Current Plan</h2>

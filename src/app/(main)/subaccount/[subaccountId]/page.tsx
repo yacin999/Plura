@@ -2,7 +2,6 @@ import BlurPage from '@/components/global/blur-page'
 import CircleProgress from '@/components/global/circle-progress'
 import PipelineValue from '@/components/global/pipeline-value'
 import SubaccountFunnelChart from '@/components/global/subaccount-funnel-chart'
-// import SubaccountFunnelChart from '@/components/global/subaccount-funnel-chart'
 import { Badge } from '@/components/ui/badge'
 import {
   Card,
@@ -102,9 +101,9 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
     closingRate = +(
       (totalClosedSessions.length / checkoutSessions.data.length) *
       100
-    ).toFixed(2)
+    ).toFixed(2) || 0
   }
-
+  console.log("test closing rate", closingRate)
   const funnels = await db.funnel.findMany({
     where: {
       subAccountId: params.subaccountId,
@@ -125,7 +124,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
   return (
     <BlurPage>
       <div className="relative h-full">
-        {/* {!subaccountDetails.connectAccountId && (
+        {!subaccountDetails.connectAccountId && (
           <div className="absolute -top-10 -left-10 right-0 bottom-0 z-30 flex items-center justify-center backdrop-blur-md bg-background/50">
             <Card>
               <CardHeader>
@@ -143,7 +142,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
               </CardHeader>
             </Card>
           </div>
-        )} */}
+        )}
         <div className="flex flex-col gap-4 pb-6">
           <div className="flex gap-4 flex-col xl:!flex-row">
             <Card className="flex-1 relative">
@@ -212,7 +211,7 @@ const SubaccountPageId = async ({ params, searchParams }: Props) => {
             </Card>
           </div>
 
-           <div className="flex gap-4 flex-col xl:!flex-row">
+          <div className="flex gap-4 flex-col xl:!flex-row">
             <Card className="relative">
               <CardHeader>
                 <CardDescription>Funnel Performance</CardDescription>

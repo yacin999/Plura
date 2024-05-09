@@ -94,7 +94,7 @@ const Page = async ({
     closingRate = +(
       (totalClosedSessions.length / checkoutSessions.data.length) *
       100
-    ).toFixed(2)
+    ).toFixed(2) || 0
   }
 
   return (
