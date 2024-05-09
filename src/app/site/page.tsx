@@ -49,7 +49,7 @@ export default async function Home() {
           {" you're"} not <br />
           ready to commit you can get started for free.
         </p>
-        <div className="flex  justify-center gap-4 flex-wrap mt-6">
+        <div className="flex  justify-center gap-4 flex-wrap mt-6  mb-5">
           {prices.data.map((card) => (
             //WIP: Wire up free product from stripe
             <Card

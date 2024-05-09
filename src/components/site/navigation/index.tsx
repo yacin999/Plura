@@ -11,7 +11,7 @@ type Props = {
 
 const Navigation = ({ user }: Props) => {
   return (
-    <div className="fixed top-0 right-0 left-0 p-4 flex items-center justify-between z-10">
+    <div className="fixed top-0 right-0 left-0 p-4 flex items-center justify-between z-10 backdrop-blur-lg border-b-slate-900">
       <aside className="flex items-center gap-2">
         <Image
           src={'./assets/plura-logo.svg'}
