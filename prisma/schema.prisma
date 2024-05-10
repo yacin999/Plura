@@ -1,5 +1,5 @@
 datasource db {
-  provider     = "mysql"
+  provider     = "cockroachdb"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -7,6 +7,12 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+// cockroach setup:
+model Widget {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+}
+
 
 enum Role {
   AGENCY_OWNER
@@ -51,7 +57,7 @@ enum Icon {
 model User {
   id           String         @id @default(uuid())
   name         String
-  avatarUrl    String         @db.Text
+  avatarUrl    String         @db.Char()
   email        String         @unique
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -82,8 +88,8 @@ model Agency {
   connectAccountId String?               @default("")
   customerId       String                @default("")
   name             String
-  agencyLogo       String                @db.Text
-  companyEmail     String                @db.Text
+  agencyLogo       String                @db.Char()
+  companyEmail     String                @db.Char()
   companyPhone     String
   whiteLabel       Boolean               @default(true)
   address          String
@@ -107,10 +113,10 @@ model SubAccount {
   id               String                    @id @default(uuid())
   connectAccountId String?                   @default("")
   name             String
-  subAccountLogo   String                    @db.Text
+  subAccountLogo   String                    @db.Char()
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
-  companyEmail     String                    @db.Text
+  companyEmail     String                    @db.Char()
   companyPhone     String
   goal             Int                       @default(5)
   address          String
@@ -294,7 +300,7 @@ model Funnel {
   description   String?
   published     Boolean      @default(false)
   subDomainName String?      @unique
-  favicon       String?      @db.Text
+  favicon       String?      @db.Char()
   subAccountId  String
   SubAccount    SubAccount   @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
   FunnelPages   FunnelPage[]
@@ -311,7 +317,7 @@ model ClassName {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   funnelId   String
-  customData String?  @db.LongText
+  customData String?  @db.Char()
   Funnel     Funnel   @relation(fields: [funnelId], references: [id], onDelete: Cascade)
 
   @@index([funnelId])
@@ -324,9 +330,9 @@ model FunnelPage {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   visits       Int      @default(0)
-  content      String?  @db.LongText
+  content      String?  @db.Char()
   order        Int
-  previewImage String?  @db.Text
+  previewImage String?  @db.Char()
   funnelId     String
   Funnel       Funnel   @relation(fields: [funnelId], references: [id], onDelete: Cascade)
 
