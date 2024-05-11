@@ -57,7 +57,7 @@ enum Icon {
 model User {
   id           String         @id @default(uuid())
   name         String
-  avatarUrl    String         @db.Char()
+  avatarUrl    String         @db.String
   email        String         @unique
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -88,8 +88,8 @@ model Agency {
   connectAccountId String?               @default("")
   customerId       String                @default("")
   name             String
-  agencyLogo       String                @db.Char()
-  companyEmail     String                @db.Char()
+  agencyLogo       String                @db.String
+  companyEmail     String                @db.String
   companyPhone     String
   whiteLabel       Boolean               @default(true)
   address          String
@@ -113,10 +113,10 @@ model SubAccount {
   id               String                    @id @default(uuid())
   connectAccountId String?                   @default("")
   name             String
-  subAccountLogo   String                    @db.Char()
+  subAccountLogo   String                    @db.String
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
-  companyEmail     String                    @db.Char()
+  companyEmail     String                    @db.String
   companyPhone     String
   goal             Int                       @default(5)
   address          String
@@ -300,7 +300,7 @@ model Funnel {
   description   String?
   published     Boolean      @default(false)
   subDomainName String?      @unique
-  favicon       String?      @db.Char()
+  favicon       String?      @db.String
   subAccountId  String
   SubAccount    SubAccount   @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
   FunnelPages   FunnelPage[]
@@ -317,7 +317,7 @@ model ClassName {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   funnelId   String
-  customData String?  @db.Char()
+  customData String?  @db.String
   Funnel     Funnel   @relation(fields: [funnelId], references: [id], onDelete: Cascade)
 
   @@index([funnelId])
@@ -330,9 +330,9 @@ model FunnelPage {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   visits       Int      @default(0)
-  content      String?  @db.Char()
+  content      String?  @db.String
   order        Int
-  previewImage String?  @db.Char()
+  previewImage String?  @db.String
   funnelId     String
   Funnel       Funnel   @relation(fields: [funnelId], references: [id], onDelete: Cascade)
 

@@ -200,6 +200,7 @@ export const deleteAgency = async(agencyId : string) => {
 
 export const initUser = async (newUser: Partial<User>) => {
     const user = await currentUser()
+    console.log("****** test user avatar data :", user?.imageUrl)
     if (!user) return
   
     const userData = await db.user.upsert({

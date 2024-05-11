@@ -106,7 +106,7 @@ const AgencyDetails = ({data} : Props) => {
                 custId = customerData.customerId
             }
             newUserData = await initUser({role : "AGENCY_OWNER"})
-
+            console.log("test from AGENCY CREATION :", newUserData)
             if (!data?.customerId && !custId) return
 
             const response = await upsertAgency({
